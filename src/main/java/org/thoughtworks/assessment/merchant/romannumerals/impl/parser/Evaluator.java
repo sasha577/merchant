@@ -32,7 +32,7 @@ public final class Evaluator {
         for(final RomanNumberLiteral s: number.getValue()){
             
             final Optional<State> nextState = 
-                    possibleStates.stream().filter(state -> state.getSymbol() == s).findFirst();
+                    possibleStates.stream().filter(state -> state.getLiteral() == s).findFirst();
             
             if(!nextState.isPresent()){
                 throw new WrongNumberException(number);

@@ -1,6 +1,7 @@
 package org.thoughtworks.assessment.merchant.romannumerals.impl.parser;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.thoughtworks.assessment.merchant.common.types.Pair;
 import org.thoughtworks.assessment.merchant.common.types.base.AbstractPair;
@@ -11,12 +12,12 @@ public final class State extends AbstractPair<Pair<RomanNumberLiteral,Integer>, 
 
     public static int COUNTER = 0;
     
-    public State(final RomanNumberLiteral symbol, final Collection<State> successors, final int substractionCompensation) {
-        super(Pair.make(symbol,substractionCompensation), successors);
+    public State(final RomanNumberLiteral literal, final Collection<State> successors, final Optional<RomanNumberLiteral> predecessor) {
+        super(Pair.make(literal,calculateSubstractionCompensation(literal,predecessor)), successors);
         ++COUNTER;
     }
 
-    public RomanNumberLiteral getSymbol() {
+    public RomanNumberLiteral getLiteral() {
         return super.getFirst().getFirstValue();
     }
     
@@ -25,11 +26,20 @@ public final class State extends AbstractPair<Pair<RomanNumberLiteral,Integer>, 
     }
     
     public int getValue(){
-        final int value = getSymbol().getValue();
+        final int value = getLiteral().getValue();
         return value + getSubstractionCompensation();
     }
     
     private int getSubstractionCompensation(){
         return super.getFirst().getSecondValue();
+    }
+    
+    private static int calculateSubstractionCompensation(final RomanNumberLiteral literal, final Optional<RomanNumberLiteral> predecessor ){
+        
+        if(predecessor.isPresent() && literal.isHigherThen(predecessor.get())){
+            return -(predecessor.get().getValue() * 2);
+        }else{
+            return 0;
+        }
     }
 }

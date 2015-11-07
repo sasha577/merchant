@@ -10,7 +10,7 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.Roma
 @SuppressWarnings("serial")
 public final class RomanNumber extends SingleValue<Collection<RomanNumberLiteral>>{
 
-    public static RomanNumber parse(final String romanNumber){
+    public static RomanNumber valueOf(final String romanNumber){
 
         final List<RomanNumberLiteral> string = 
                 romanNumber.chars().mapToObj(c -> RomanNumberLiteral.getBy((char)c)).collect(Collectors.toList());

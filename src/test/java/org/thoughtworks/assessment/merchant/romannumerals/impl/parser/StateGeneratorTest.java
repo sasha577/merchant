@@ -14,62 +14,62 @@ public final class StateGeneratorTest {
         
         System.out.print(State.COUNTER);
 
-        Assert.assertEquals( ArabicNumber.valueOf(10), EVALUATOR.evaluate(RomanNumber.parse("X")));
+        Assert.assertEquals( ArabicNumber.valueOf(10), EVALUATOR.evaluate(RomanNumber.valueOf("X")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(40), EVALUATOR.evaluate(RomanNumber.parse("XL")));
+        Assert.assertEquals( ArabicNumber.valueOf(40), EVALUATOR.evaluate(RomanNumber.valueOf("XL")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(20), EVALUATOR.evaluate(RomanNumber.parse("XX")));
+        Assert.assertEquals( ArabicNumber.valueOf(20), EVALUATOR.evaluate(RomanNumber.valueOf("XX")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(30), EVALUATOR.evaluate(RomanNumber.parse("XXX")));
+        Assert.assertEquals( ArabicNumber.valueOf(30), EVALUATOR.evaluate(RomanNumber.valueOf("XXX")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(3), EVALUATOR.evaluate(RomanNumber.parse("III")));
+        Assert.assertEquals( ArabicNumber.valueOf(3), EVALUATOR.evaluate(RomanNumber.valueOf("III")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(3000), EVALUATOR.evaluate(RomanNumber.parse("MMM")));
+        Assert.assertEquals( ArabicNumber.valueOf(3000), EVALUATOR.evaluate(RomanNumber.valueOf("MMM")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(39), EVALUATOR.evaluate(RomanNumber.parse("XXXIX")));
+        Assert.assertEquals( ArabicNumber.valueOf(39), EVALUATOR.evaluate(RomanNumber.valueOf("XXXIX")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(44), EVALUATOR.evaluate(RomanNumber.parse("XLIV")));
+        Assert.assertEquals( ArabicNumber.valueOf(44), EVALUATOR.evaluate(RomanNumber.valueOf("XLIV")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(99), EVALUATOR.evaluate(RomanNumber.parse("XCIX")));
+        Assert.assertEquals( ArabicNumber.valueOf(99), EVALUATOR.evaluate(RomanNumber.valueOf("XCIX")));
 
-        Assert.assertEquals( ArabicNumber.valueOf(94), EVALUATOR.evaluate(RomanNumber.parse("XCIV")));
+        Assert.assertEquals( ArabicNumber.valueOf(94), EVALUATOR.evaluate(RomanNumber.valueOf("XCIV")));
     }
 
     @Test(expected=WrongNumberException.class)
     public void negative1() throws WrongNumberException {
 
-        EVALUATOR.evaluate(RomanNumber.parse("IIV"));
+        EVALUATOR.evaluate(RomanNumber.valueOf("IIV"));
     }
 
     @Test(expected=WrongNumberException.class)
     public void negative2() throws WrongNumberException {
 
-        EVALUATOR.evaluate(RomanNumber.parse("DXXL"));
+        EVALUATOR.evaluate(RomanNumber.valueOf("DXXL"));
 
     }
 
     @Test(expected=WrongNumberException.class)
     public void negative3() throws WrongNumberException {
 
-        EVALUATOR.evaluate(RomanNumber.parse("VVVV"));
+        EVALUATOR.evaluate(RomanNumber.valueOf("VVVV"));
     }
 
     @Test(expected=WrongNumberException.class)
     public void negative5() throws WrongNumberException {
 
-        EVALUATOR.evaluate(RomanNumber.parse("VV"));
+        EVALUATOR.evaluate(RomanNumber.valueOf("VV"));
     }
 
     @Test(expected=WrongNumberException.class)
     public void negative6() throws WrongNumberException {
 
-        EVALUATOR.evaluate(RomanNumber.parse("XXXIXV"));
+        EVALUATOR.evaluate(RomanNumber.valueOf("XXXIXV"));
     }
     
     @Test(expected=WrongNumberException.class)
     public void negative7() throws WrongNumberException {
 
-        EVALUATOR.evaluate(RomanNumber.parse("XCVXI"));
+        EVALUATOR.evaluate(RomanNumber.valueOf("XCVXI"));
     }
 
 
