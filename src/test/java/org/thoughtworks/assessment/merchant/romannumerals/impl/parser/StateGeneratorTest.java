@@ -32,6 +32,7 @@ public final class StateGeneratorTest {
 
         Assert.assertEquals( ArabicNumber.valueOf(99), EVALUATOR.evaluate(RomanNumber.parse("XCIX")));
 
+        Assert.assertEquals( ArabicNumber.valueOf(94), EVALUATOR.evaluate(RomanNumber.parse("XCIV")));
     }
 
     @Test(expected=WrongNumberException.class)
@@ -64,6 +65,13 @@ public final class StateGeneratorTest {
 
         EVALUATOR.evaluate(RomanNumber.parse("XXXIXV"));
     }
+    
+    @Test(expected=WrongNumberException.class)
+    public void negative7() throws WrongNumberException {
+
+        EVALUATOR.evaluate(RomanNumber.parse("XCVXI"));
+    }
+
 
     private static final Evaluator EVALUATOR = new StateGenerator().generate();
 
