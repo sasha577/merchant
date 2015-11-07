@@ -1,8 +1,8 @@
-package org.thoughtworks.assessment.merchant.common.types;
+package org.thoughtworks.assessment.merchant.common.types.base;
 
 import java.io.Serializable;
 
-import org.thoughtworks.assessment.merchant.common.types.utils.ObjectUtils;
+import org.thoughtworks.assessment.merchant.common.types.base.utils.ObjectUtils;
 
 
 /**

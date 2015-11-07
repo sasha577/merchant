@@ -8,20 +8,20 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol;
+import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
 
 public final class StateFactory {
 
-    private final RomanNumberSymbol symbol;
+    private final RomanNumberLiteral symbol;
     private final int maxReccurence;
-    private final Collection<RomanNumberSymbol> minuends;
+    private final Collection<RomanNumberLiteral> minuends;
 
     private final MetaStateFactory metaFactory;
 
     public StateFactory(
-            final RomanNumberSymbol symbol, 
+            final RomanNumberLiteral symbol, 
             final int maxCount, 
-            final Collection<RomanNumberSymbol> minuends,
+            final Collection<RomanNumberLiteral> minuends,
             final MetaStateFactory metaFactory) {
 
         this.symbol = symbol;
@@ -30,18 +30,22 @@ public final class StateFactory {
         this.metaFactory = metaFactory;
     }
 
-    public RomanNumberSymbol getSymbol(){
+    public RomanNumberLiteral getSymbol(){
         return symbol;
     }
 
-    public State create(final List<RomanNumberSymbol> processedString, final int substractionCompensation){
+    public State create(){
+        return create(Collections.emptyList(), 0);
+    }
+    
+    private State create(final List<RomanNumberLiteral> processedString, final int substractionCompensation){
 
-        final List<RomanNumberSymbol> actualString = 
+        final List<RomanNumberLiteral> actualString = 
                 CollectionUtils.add(processedString,symbol);
 
-        final List<State> followers = new ArrayList<State>(RomanNumberSymbol.values().length);
+        final List<State> followers = new ArrayList<State>(RomanNumberLiteral.values().length);
 
-        final Optional<RomanNumberSymbol> predecessor = 
+        final Optional<RomanNumberLiteral> predecessor = 
                 CollectionUtils.getLast(processedString);
 
         // a previous value subtract from this one.
@@ -49,7 +53,7 @@ public final class StateFactory {
         
         // the following addition value must be smaller then a previous subtraction value.
         // XLIV instead of XXXIXV
-        final Collection<RomanNumberSymbol> lowerValues = 
+        final Collection<RomanNumberLiteral> lowerValues = 
                 isMinuend ? CollectionUtils.filter(symbol.getLowerValues(), s -> predecessor.get().isHigherThen(s)) : symbol.getLowerValues();
 
         final List<State> lowerFollowers = 
@@ -71,14 +75,14 @@ public final class StateFactory {
      * calculates the following states from which this one is allowed to substract. 
      */
     private Collection<State> createSubstractionStates(
-            final List<RomanNumberSymbol> actualString, final Optional<RomanNumberSymbol> predecessor) {
+            final List<RomanNumberLiteral> actualString, final Optional<RomanNumberLiteral> predecessor) {
         
-        final List<RomanNumberSymbol> possibleMinuends =
+        final List<RomanNumberLiteral> possibleMinuends =
                 CollectionUtils.filter( minuends, minuend -> ( !predecessor.isPresent() || predecessor.get().isHigherOrEqualThen(minuend)) );
 
         final int substractionCompensation = -(symbol.getValue()*2);
 
-        final Function<RomanNumberSymbol, State> minuendStateFactory = 
+        final Function<RomanNumberLiteral, State> minuendStateFactory = 
                 minuend -> metaFactory.getSymbolFactory(minuend).create(actualString, substractionCompensation);
                 
         return CollectionUtils.map(possibleMinuends, minuendStateFactory);

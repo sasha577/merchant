@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.common.types.utils;
+package org.thoughtworks.assessment.merchant.common.types.base.utils;
 
 public final class ObjectUtils {
 

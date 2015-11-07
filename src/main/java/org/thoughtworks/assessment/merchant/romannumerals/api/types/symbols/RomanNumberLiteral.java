@@ -14,7 +14,7 @@ import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
  * Symbols used in Roman numbers.
  *
  */
-public enum RomanNumberSymbol{
+public enum RomanNumberLiteral{
     I(1),
     V(5),
     X(10),
@@ -25,7 +25,7 @@ public enum RomanNumberSymbol{
     
     private final int value;
     
-    private RomanNumberSymbol(final int value) {
+    private RomanNumberLiteral(final int value) {
         this.value = value;
     }
     
@@ -33,11 +33,11 @@ public enum RomanNumberSymbol{
         return value;
     }
     
-    public boolean isHigherThen( final RomanNumberSymbol other){
+    public boolean isHigherThen( final RomanNumberLiteral other){
         return this.value > other.value;
     }
 
-    public boolean isHigherOrEqualThen( final RomanNumberSymbol other){
+    public boolean isHigherOrEqualThen( final RomanNumberLiteral other){
         return this.value >= other.value;
     }
 
@@ -45,9 +45,9 @@ public enum RomanNumberSymbol{
      * gets all literals that have lower value than this one.
      * @return all literals that have lower value than this one.
      */
-    public Collection<RomanNumberSymbol> getLowerValues(){
+    public Collection<RomanNumberLiteral> getLowerValues(){
 
-        final List<RomanNumberSymbol> allValues = Arrays.asList(RomanNumberSymbol.values());
+        final List<RomanNumberLiteral> allValues = Arrays.asList(RomanNumberLiteral.values());
 
         return CollectionUtils.filter(allValues, (p -> p.value < this.value) );
     }
@@ -58,19 +58,19 @@ public enum RomanNumberSymbol{
      * @return enum item
      * @throws NoSuchElementException if not found
      */
-    public static RomanNumberSymbol getBy(final char c){
+    public static RomanNumberLiteral getBy(final char c){
         
-        final List<RomanNumberSymbol> allValues = Arrays.asList(RomanNumberSymbol.values());
+        final List<RomanNumberLiteral> allValues = Arrays.asList(RomanNumberLiteral.values());
         
-        final Optional<RomanNumberSymbol> result = allValues.stream().filter(p -> p.name().charAt(0)==c).findFirst();
+        final Optional<RomanNumberLiteral> result = allValues.stream().filter(p -> p.name().charAt(0)==c).findFirst();
         
         return result.get();
     }
     
-    public static final Comparator<RomanNumberSymbol> VALUE_COMPARATOR = new Comparator<RomanNumberSymbol>() {
+    public static final Comparator<RomanNumberLiteral> VALUE_COMPARATOR = new Comparator<RomanNumberLiteral>() {
         
         @Override
-        public int compare(final RomanNumberSymbol o1, final RomanNumberSymbol o2) {
+        public int compare(final RomanNumberLiteral o1, final RomanNumberLiteral o2) {
             assert o1 != null;
             assert o2 != null;
 

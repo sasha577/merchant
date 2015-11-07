@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.thoughtworks.assessment.merchant.romannumerals.api.types.ArabicNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.types.RomanNumber;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol;
+import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
 
 public final class Evaluator {
     
@@ -29,7 +29,7 @@ public final class Evaluator {
         Collection<State> possibleStates = states;
         int result = 0;
         
-        for(final RomanNumberSymbol s: number.getValue()){
+        for(final RomanNumberLiteral s: number.getValue()){
             
             final Optional<State> nextState = 
                     possibleStates.stream().filter(state -> state.getSymbol() == s).findFirst();

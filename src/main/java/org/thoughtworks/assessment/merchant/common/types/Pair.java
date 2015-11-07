@@ -2,6 +2,8 @@ package org.thoughtworks.assessment.merchant.common.types;
 
 import java.io.Serializable;
 
+import org.thoughtworks.assessment.merchant.common.types.base.AbstractPair;
+
 
 /**
  * 

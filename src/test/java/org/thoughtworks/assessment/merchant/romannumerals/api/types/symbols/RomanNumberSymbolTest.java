@@ -7,27 +7,27 @@ public final class RomanNumberSymbolTest {
 
     @Test
     public void testGetValue() {
-        Assert.assertEquals(1, RomanNumberSymbol.I.getValue());
+        Assert.assertEquals(1, RomanNumberLiteral.I.getValue());
     }
 
     @Test
     public void testIsHigherThen() {
-        Assert.assertTrue(RomanNumberSymbol.V.isHigherThen(RomanNumberSymbol.I));
+        Assert.assertTrue(RomanNumberLiteral.V.isHigherThen(RomanNumberLiteral.I));
     }
 
     @Test
     public void testIsHigherOrEqualThen() {
-        Assert.assertTrue(RomanNumberSymbol.V.isHigherOrEqualThen(RomanNumberSymbol.I));
+        Assert.assertTrue(RomanNumberLiteral.V.isHigherOrEqualThen(RomanNumberLiteral.I));
     }
 
     @Test
     public void testGetLowerValues() {
-        Assert.assertTrue(RomanNumberSymbol.I.getLowerValues().isEmpty());
+        Assert.assertTrue(RomanNumberLiteral.I.getLowerValues().isEmpty());
     }
 
     @Test
     public void testGetBy() {
-        Assert.assertEquals(RomanNumberSymbol.V, RomanNumberSymbol.getBy('V'));
+        Assert.assertEquals(RomanNumberLiteral.V, RomanNumberLiteral.getBy('V'));
     }
 
 }

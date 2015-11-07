@@ -1,6 +1,6 @@
 package org.thoughtworks.assessment.merchant.romannumerals.api.types;
 
-import org.thoughtworks.assessment.merchant.common.types.SingleValue;
+import org.thoughtworks.assessment.merchant.common.types.base.SingleValue;
 
 @SuppressWarnings("serial")
 public final class ArabicNumber extends SingleValue<Integer>{

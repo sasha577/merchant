@@ -1,12 +1,12 @@
 package org.thoughtworks.assessment.merchant.romannumerals.impl.parser;
 
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol.C;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol.D;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol.I;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol.L;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol.M;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol.V;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol.X;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.C;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.D;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.I;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.L;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.M;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.V;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.X;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberSymbol;
+import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
 
 public final class StateGenerator{
 
-    private final Map<RomanNumberSymbol,StateFactory> factoryBySymbol;
+    private final Map<RomanNumberLiteral,StateFactory> factoryBySymbol;
     private final List<StateFactory> factories;
     
     public StateGenerator() {
@@ -34,14 +34,14 @@ public final class StateGenerator{
     
     public Evaluator generate(){
         
-        return new Evaluator(CollectionUtils.map( factories, f -> f.create(Collections.emptyList(), 0)));
+        return new Evaluator(CollectionUtils.map( factories, f -> f.create()));
         
     }
     
     private final class MetaStateFactoryImpl implements MetaStateFactory{
         
         @Override
-        public StateFactory getSymbolFactory(final RomanNumberSymbol symbol) {
+        public StateFactory getSymbolFactory(final RomanNumberLiteral symbol) {
 
             return StateGenerator.this.factoryBySymbol.get(symbol);
         }
