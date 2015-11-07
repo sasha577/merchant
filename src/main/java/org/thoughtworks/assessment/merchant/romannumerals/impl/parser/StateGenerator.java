@@ -12,10 +12,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.interfaces.StateFactory;
 
 public final class StateGenerator{
 
@@ -34,7 +38,7 @@ public final class StateGenerator{
     
     public Evaluator generate(){
         
-        return new Evaluator(CollectionUtils.map( factories, f -> f.create()));
+        return new Evaluator(CollectionUtils.map( factories, f -> f.apply(Optional.empty())));
         
     }
     
@@ -50,14 +54,32 @@ public final class StateGenerator{
     private static List<StateFactory> createStateFactories( final MetaStateFactory metaStateFactory){
         
         return Arrays.asList( 
-                new StateFactory(I, 3,  Arrays.asList(V,X), metaStateFactory),
-                new StateFactory(V, 1,  Collections.emptyList(), metaStateFactory),
-                new StateFactory(X, 3,  Arrays.asList(L,C), metaStateFactory),
-                new StateFactory(L, 1,  Collections.emptyList(), metaStateFactory),
-                new StateFactory(C, 3,  Arrays.asList(D,M), metaStateFactory),
-                new StateFactory(D, 1,  Collections.emptyList(), metaStateFactory),
-                new StateFactory(M, 3,  Collections.emptyList(), metaStateFactory)
+                memoize(new StateFactoryImpl(I, 3,  Arrays.asList(V,X), metaStateFactory)),
+                memoize(new StateFactoryImpl(V, 1,  Collections.emptyList(), metaStateFactory)),
+                memoize(new StateFactoryImpl(X, 3,  Arrays.asList(L,C), metaStateFactory)),
+                memoize(new StateFactoryImpl(L, 1,  Collections.emptyList(), metaStateFactory)),
+                memoize(new StateFactoryImpl(C, 3,  Arrays.asList(D,M), metaStateFactory)),
+                memoize(new StateFactoryImpl(D, 1,  Collections.emptyList(), metaStateFactory)),
+                memoize(new StateFactoryImpl(M, 3,  Collections.emptyList(), metaStateFactory))
                 );
     }
 
+    // Lambda memorization
+    public static StateFactory memoize(final StateFactory f) {
+        
+        final ConcurrentMap<Optional<RomanNumberLiteral>,State> lookup = new ConcurrentHashMap<>();
+        
+        return new StateFactory() {
+            
+            @Override
+            public State apply(final Optional<RomanNumberLiteral> t) {
+                return lookup.computeIfAbsent(t, f);
+            }
+            
+            @Override
+            public RomanNumberLiteral getSymbol() {
+                return f.getSymbol();
+            }
+        };
+    }
 }

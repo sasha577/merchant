@@ -9,8 +9,9 @@ import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.interfaces.StateFactory;
 
-public final class StateFactory {
+public final class StateFactoryImpl implements StateFactory{
 
     private final RomanNumberLiteral literal;
     private final int maxReccurence;
@@ -18,7 +19,7 @@ public final class StateFactory {
 
     private final MetaStateFactory metaFactory;
 
-    public StateFactory(
+    public StateFactoryImpl(
             final RomanNumberLiteral symbol, 
             final int maxCount, 
             final Collection<RomanNumberLiteral> minuends,
@@ -30,18 +31,16 @@ public final class StateFactory {
         this.metaFactory = metaFactory;
     }
 
+    @Override
     public RomanNumberLiteral getSymbol(){
         return literal;
     }
 
-    public State create(){
-        return create(Optional.empty());
-    }
-    
-    private State create(final Optional<RomanNumberLiteral> predecessor){
-
+    @Override
+    public State apply(final Optional<RomanNumberLiteral> predecessor) {
+        
         final List<State> followers = new ArrayList<State>(RomanNumberLiteral.values().length);
-
+        
         // a previous value subtract from this one.
         final boolean isMinuend = predecessor.isPresent() && literal.isHigherThen(predecessor.get());
         
@@ -49,21 +48,21 @@ public final class StateFactory {
         // XLIV instead of XXXIXV
         final Collection<RomanNumberLiteral> lowerliterals = 
                 isMinuend ? CollectionUtils.filter(literal.getLowerValues(), follower -> predecessor.get().isHigherThen(follower)) : literal.getLowerValues();
-
+        
         final List<State> lowerFollowers = 
-                CollectionUtils.map(lowerliterals, p -> metaFactory.getSymbolFactory(p).create(Optional.of(literal)));
-
+                CollectionUtils.map(lowerliterals, p -> metaFactory.getSymbolFactory(p).apply(Optional.of(literal)));
+        
         followers.addAll(lowerFollowers);
-
+        
         if( !isMinuend ){
-
+        
             // the literal can be recurrenced in row is not minuend itself
             followers.addAll(createReccurenceStates(lowerFollowers));
             
             // the literal can be used as subtrahend if is not minuend itself 
             followers.addAll(createMinuendStates(predecessor));
         }
-
+        
         return new State(literal,followers,predecessor);
     }
 
@@ -76,7 +75,7 @@ public final class StateFactory {
                 CollectionUtils.filter( minuends, minuend -> ( !predecessor.isPresent() || predecessor.get().isHigherOrEqualThen(minuend)) );
 
         final Function<RomanNumberLiteral, State> stateFactory = 
-                follower -> metaFactory.getSymbolFactory(follower).create(Optional.of(literal));
+                follower -> metaFactory.getSymbolFactory(follower).apply(Optional.of(literal));
                 
         return CollectionUtils.map(possibleMinuends, stateFactory);
     }
@@ -100,5 +99,6 @@ public final class StateFactory {
             return Collections.emptyList();
         }
     }
+
 
 }

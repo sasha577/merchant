@@ -11,8 +11,6 @@ public final class StateGeneratorTest {
 
     @Test
     public void positive() throws WrongNumberException {
-        
-        System.out.print(State.COUNTER);
 
         Assert.assertEquals( ArabicNumber.valueOf(10), EVALUATOR.evaluate(RomanNumber.valueOf("X")));
 
@@ -65,7 +63,7 @@ public final class StateGeneratorTest {
 
         EVALUATOR.evaluate(RomanNumber.valueOf("XXXIXV"));
     }
-    
+
     @Test(expected=WrongNumberException.class)
     public void negative7() throws WrongNumberException {
 
@@ -73,6 +71,13 @@ public final class StateGeneratorTest {
     }
 
 
-    private static final Evaluator EVALUATOR = new StateGenerator().generate();
+    private static final Evaluator EVALUATOR = createEvaluater();
+
+
+    private static Evaluator createEvaluater() {
+        final Evaluator result = new StateGenerator().generate();
+        System.out.print("number of states created: "+State.COUNTER);
+        return result;
+    }
 
 }

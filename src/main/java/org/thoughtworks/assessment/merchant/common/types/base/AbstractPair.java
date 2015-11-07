@@ -21,8 +21,8 @@ public abstract class AbstractPair<T1,T2> implements Serializable{
     private final T2 second;
 
     protected AbstractPair(final T1 first, final T2 second) {
-    	assert first != null && second != null;
-    	
+        assert first != null && second != null;
+        
         this.first=first;
         this.second=second;
     }

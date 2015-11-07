@@ -1,6 +1,7 @@
 package org.thoughtworks.assessment.merchant.romannumerals.impl.parser;
 
 import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.interfaces.StateFactory;
 
 public interface MetaStateFactory {
 
