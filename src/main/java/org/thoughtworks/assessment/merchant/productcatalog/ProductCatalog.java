@@ -1,10 +1,10 @@
-package org.thoughtworks.assessment.merchant.productcalog;
+package org.thoughtworks.assessment.merchant.productcatalog;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.thoughtworks.assessment.merchant.productcalog.types.PriceInCredits;
-import org.thoughtworks.assessment.merchant.productcalog.types.ProductName;
+import org.thoughtworks.assessment.merchant.productcatalog.types.PriceInCredits;
+import org.thoughtworks.assessment.merchant.productcatalog.types.ProductName;
 
 public final class ProductCatalog {
 

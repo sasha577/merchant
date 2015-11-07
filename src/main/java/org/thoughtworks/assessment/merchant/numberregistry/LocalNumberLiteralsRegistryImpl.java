@@ -5,12 +5,13 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
-import org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumber;
-import org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumberLiteral;
+import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
+import org.thoughtworks.assessment.merchant.numberregistry.api.types.LocalNumber;
+import org.thoughtworks.assessment.merchant.numberregistry.api.types.LocalNumberLiteral;
 import org.thoughtworks.assessment.merchant.romannumerals.api.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
 
-public final class NumberLiteralsTranslator{
+public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteralsRegistry{
 
     @SuppressWarnings("serial")
     public static final class UnknownLiteral extends Exception{
@@ -21,16 +22,24 @@ public final class NumberLiteralsTranslator{
 
     private final Map<LocalNumberLiteral,RomanNumberLiteral>  romanByLocalLiteral;
 
-    public NumberLiteralsTranslator() {
+    public LocalNumberLiteralsRegistryImpl() {
 
         this.romanByLocalLiteral = new HashMap<LocalNumberLiteral, RomanNumberLiteral>();
     }
 
+    /* (non-Javadoc)
+     * @see org.thoughtworks.assessment.merchant.numberregistry.LocalNumberLiteralsRegistry#registerLocalLiteral(org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumberLiteral, org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral)
+     */
+    @Override
     public void registerLocalLiteral(final LocalNumberLiteral localLiteral, final RomanNumberLiteral romanLiteral){
 
         romanByLocalLiteral.put(localLiteral, romanLiteral);
     }
 
+    /* (non-Javadoc)
+     * @see org.thoughtworks.assessment.merchant.numberregistry.LocalNumberLiteralsRegistry#toRomanNumber(org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumber)
+     */
+    @Override
     public RomanNumber toRomanNumber(final LocalNumber localNumber) throws UnknownLiteral{
 
         final Function<LocalNumberLiteral, RomanNumberLiteral> local2roman = p -> {

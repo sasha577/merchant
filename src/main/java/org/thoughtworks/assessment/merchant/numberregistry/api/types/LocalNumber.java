@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.numberregistry.types;
+package org.thoughtworks.assessment.merchant.numberregistry.api.types;
 
 import java.util.Collection;
 

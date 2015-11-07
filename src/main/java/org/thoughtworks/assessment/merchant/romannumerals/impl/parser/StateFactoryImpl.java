@@ -46,11 +46,13 @@ public final class StateFactoryImpl implements StateFactory{
         
         // the following addition value must be smaller then a previous subtraction one.
         // XLIV instead of XXXIXV
-        final Collection<RomanNumberLiteral> lowerliterals = 
-                isMinuend ? CollectionUtils.filter(literal.getLowerValues(), follower -> predecessor.get().isHigherThen(follower)) : literal.getLowerValues();
+        final Collection<RomanNumberLiteral> lowerliterals =  
+                isMinuend ? 
+                        CollectionUtils.filter(literal.getLowerValues(), followingLiteral -> predecessor.get().isHigherThen(followingLiteral)) : 
+                        literal.getLowerValues();
         
         final List<State> lowerFollowers = 
-                CollectionUtils.map(lowerliterals, p -> metaFactory.getSymbolFactory(p).apply(Optional.of(literal)));
+                CollectionUtils.map(lowerliterals, followingLiteral -> metaFactory.getSymbolFactory(followingLiteral).apply(Optional.of(literal)));
         
         followers.addAll(lowerFollowers);
         
@@ -75,7 +77,7 @@ public final class StateFactoryImpl implements StateFactory{
                 CollectionUtils.filter( minuends, minuend -> ( !predecessor.isPresent() || predecessor.get().isHigherOrEqualThen(minuend)) );
 
         final Function<RomanNumberLiteral, State> stateFactory = 
-                follower -> metaFactory.getSymbolFactory(follower).apply(Optional.of(literal));
+                followingLiteral -> metaFactory.getSymbolFactory(followingLiteral).apply(Optional.of(literal));
                 
         return CollectionUtils.map(possibleMinuends, stateFactory);
     }

@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.productcalog.types;
+package org.thoughtworks.assessment.merchant.productcatalog.types;
 
 import org.thoughtworks.assessment.merchant.common.types.Fraction;
 import org.thoughtworks.assessment.merchant.common.types.base.SingleValue;
