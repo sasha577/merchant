@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.thoughtworks.assessment.merchant.common.types.Pair;
 import org.thoughtworks.assessment.merchant.common.types.base.AbstractPair;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
 @SuppressWarnings("serial")
 public final class State extends AbstractPair<Pair<RomanNumberLiteral,Integer>, Collection<State>>{

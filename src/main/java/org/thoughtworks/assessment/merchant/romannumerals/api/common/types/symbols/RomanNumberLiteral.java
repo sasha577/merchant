@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols;
+package org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -77,4 +77,5 @@ public enum RomanNumberLiteral{
             return o1.value - o2.value;
         }
     };
+
 }

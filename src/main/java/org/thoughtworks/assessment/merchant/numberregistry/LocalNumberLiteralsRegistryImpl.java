@@ -8,8 +8,8 @@ import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.types.LocalNumberLiteral;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.RomanNumber;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
+import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
 public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteralsRegistry{
 

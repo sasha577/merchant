@@ -1,11 +1,11 @@
-package org.thoughtworks.assessment.merchant.romannumerals.api.types;
+package org.thoughtworks.assessment.merchant.romannumerals.api.common.types;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.thoughtworks.assessment.merchant.common.types.base.SingleValue;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
 @SuppressWarnings("serial")
 public final class RomanNumber extends SingleValue<Collection<RomanNumberLiteral>>{

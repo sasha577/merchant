@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.romannumerals.api.types;
+package org.thoughtworks.assessment.merchant.romannumerals.api.common.types;
 
 import org.thoughtworks.assessment.merchant.common.types.base.SingleValue;
 

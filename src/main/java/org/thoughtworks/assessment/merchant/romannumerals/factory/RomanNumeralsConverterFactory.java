@@ -1,12 +1,12 @@
-package org.thoughtworks.assessment.merchant.romannumerals.impl.parser;
+package org.thoughtworks.assessment.merchant.romannumerals.factory;
 
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.C;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.D;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.I;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.L;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.M;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.V;
-import static org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral.X;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral.C;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral.D;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral.I;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral.L;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral.M;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral.V;
+import static org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral.X;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,15 +18,19 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
-import org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.RomanNumeralsConverterImpl;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.MetaStateFactory;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.State;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.StateFactoryImpl;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.interfaces.StateFactory;
 
-public final class StateGenerator{
+public final class RomanNumeralsConverterFactory{
 
     private final Map<RomanNumberLiteral,StateFactory> factoryBySymbol;
     private final List<StateFactory> factories;
     
-    public StateGenerator() {
+    public RomanNumeralsConverterFactory() {
         
         this.factories = 
                 createStateFactories(new MetaStateFactoryImpl());
@@ -36,9 +40,9 @@ public final class StateGenerator{
         
     }
     
-    public Evaluator generate(){
+    public RomanNumeralsConverterImpl create(){
         
-        return new Evaluator(CollectionUtils.map( factories, f -> f.apply(Optional.empty())));
+        return new RomanNumeralsConverterImpl(CollectionUtils.map( factories, f -> f.apply(Optional.empty())));
         
     }
     
@@ -47,7 +51,7 @@ public final class StateGenerator{
         @Override
         public StateFactory getSymbolFactory(final RomanNumberLiteral symbol) {
 
-            return StateGenerator.this.factoryBySymbol.get(symbol);
+            return RomanNumeralsConverterFactory.this.factoryBySymbol.get(symbol);
         }
     }
     
