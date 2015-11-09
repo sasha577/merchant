@@ -12,6 +12,9 @@ public final class Fraction extends AbstractPair<Integer, Integer>{
         return new Fraction(numerator, denominator);
     }
 
+    public static Fraction of(final int numerator){
+        return new Fraction(numerator, 1);
+    }
     
     private Fraction(final int numerator, final int denominator) {
         super(numerator,denominator);

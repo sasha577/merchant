@@ -6,19 +6,13 @@ import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
-import org.thoughtworks.assessment.merchant.numberregistry.api.types.LocalNumber;
-import org.thoughtworks.assessment.merchant.numberregistry.api.types.LocalNumberLiteral;
+import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
+import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
+import org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.UnknownLiteral;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
 public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteralsRegistry{
-
-    @SuppressWarnings("serial")
-    public static final class UnknownLiteral extends Exception{
-        private UnknownLiteral(final _UnknownLiteral cause){
-            super(cause.getMessage(), cause);
-        }
-    }
 
     private final Map<LocalNumberLiteral,RomanNumberLiteral>  romanByLocalLiteral;
 
@@ -69,7 +63,7 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteral
 
 
     @SuppressWarnings("serial")
-    private static final class _UnknownLiteral extends RuntimeException{
+    static final class _UnknownLiteral extends RuntimeException{
 
         private final LocalNumberLiteral unknownLiteral;
 

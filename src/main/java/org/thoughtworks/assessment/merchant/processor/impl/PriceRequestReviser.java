@@ -17,17 +17,18 @@ import org.thoughtworks.assessment.merchant.processor.impl.base.RequestReviser;
 import org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog;
 import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.PriceInCredits;
 import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.ProductName;
+import org.thoughtworks.assessment.merchant.productcatalog.api.exceptions.NotDefinedProductException;
 import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
-public final class ProductDefinitionRequestReviser implements RequestReviser{
+public final class PriceRequestReviser implements RequestReviser{
 
     private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
     private final ProductCatalog productCatalog;
     private final RomanNumeralsConverter romanNumeralsConverter;
 
-    public ProductDefinitionRequestReviser(
+    public PriceRequestReviser(
             final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
             final ProductCatalog productCatalog,
             final RomanNumeralsConverter romanNumeralsConverter) {
@@ -46,28 +47,28 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
 
         assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
 
-        final Pair<Pair<LocalNumber, ProductName>, Integer> parsedRequest = parseRequest(request,matcher);
+        final Pair<LocalNumber, ProductName> parsedRequest = parseRequest(request,matcher);
         
-        final LocalNumber localNumber = parsedRequest.getFirstValue().getFirstValue();
-        final ProductName productName = parsedRequest.getFirstValue().getSecondValue();
-        final int amount = parsedRequest.getSecondValue();
+        final LocalNumber localNumber = parsedRequest.getFirstValue();
+        final ProductName productName = parsedRequest.getSecondValue();
 
         try{
             
             final RomanNumber romanNumber = 
                     localNumberLiteralsRegistry.toRomanNumber(localNumber);
             
-            final int sumPrice = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
+            final int count = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
-            productCatalog.addOrReplaceProduct(productName, new PriceInCredits(Fraction.of(sumPrice, amount)));
+            final PriceInCredits productPrice = productCatalog.getPrice(productName);
             
-            return Replay.NONE;
+            final int result = productPrice.getValue().multiply(Fraction.of(count)).toInteger();
+            
+            return new Replay(String.format("%s is %d Credits", localNumber.toLiteral(), result));
 
-        }catch(final UnknownLiteral|WrongRomanNumberException e){
+        }catch(final UnknownLiteral|WrongRomanNumberException|NotDefinedProductException e){
             
             return new Replay(e.getMessage());
         }
-        
     }
 
     @Override
@@ -77,27 +78,25 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
     }
 
 
-    private static Pair<Pair<LocalNumber, ProductName>, Integer> parseRequest( 
+    private static Pair<LocalNumber, ProductName> parseRequest( 
             final Request request, final Matcher matcher){
 
         final Collection<LocalNumberLiteral> literals = new ArrayList<>();
 
-        for( int i = 0; i < matcher.groupCount()-2; i+=2){
+        for( int i = 0; i < matcher.groupCount()-1; ++i){
 
             literals.add(new LocalNumberLiteral(matcher.group(i)));
         }
 
         final ProductName productName = 
-                new ProductName(matcher.group(matcher.groupCount()-2));
+                new ProductName(matcher.group(matcher.groupCount()-1));
 
-        final int price = 
-                Integer.valueOf(matcher.group(matcher.groupCount()-1));
 
-        return Pair.make(Pair.make(new LocalNumber(literals), productName), price);
+        return Pair.make(new LocalNumber(literals), productName);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
-            Pattern.compile("^((\\w+)\\s+)+is\\s+(\\d+)\\s+Credits$");
+            Pattern.compile("^how\\s+many\\s+Credits\\s+is(\\s+(\\w+))+\\s*?$");
 
 
 }

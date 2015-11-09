@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
-import org.thoughtworks.assessment.merchant.numberregistry.api.types.LocalNumberLiteral;
+import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
 import org.thoughtworks.assessment.merchant.processor.common.types.Replay;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 import org.thoughtworks.assessment.merchant.processor.impl.base.RequestReviser;

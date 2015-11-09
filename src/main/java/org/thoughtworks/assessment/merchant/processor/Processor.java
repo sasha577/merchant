@@ -5,6 +5,8 @@ import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 
 public final class Processor {
 
+    
+    
     public Replay process(final Request request){
         
         return Replay.NONE;

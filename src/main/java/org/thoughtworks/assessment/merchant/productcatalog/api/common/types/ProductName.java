@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.productcatalog.types;
+package org.thoughtworks.assessment.merchant.productcatalog.api.common.types;
 
 import org.thoughtworks.assessment.merchant.common.types.base.SingleValue;
 

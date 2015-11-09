@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.numberregistry.api.types;
+package org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal;
 
 import org.thoughtworks.assessment.merchant.common.types.base.SingleValue;
 
