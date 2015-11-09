@@ -25,13 +25,13 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRo
 public final class PriceRequestReviser implements RequestReviser{
 
     private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
-    private final ProductCatalog productCatalog;
     private final RomanNumeralsConverter romanNumeralsConverter;
+    private final ProductCatalog productCatalog;
 
     public PriceRequestReviser(
             final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
-            final ProductCatalog productCatalog,
-            final RomanNumeralsConverter romanNumeralsConverter) {
+            final RomanNumeralsConverter romanNumeralsConverter,
+            final ProductCatalog productCatalog) {
         
         this.localNumberLiteralsRegistry = localNumberLiteralsRegistry;
         this.productCatalog = productCatalog;

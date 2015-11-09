@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
@@ -56,21 +55,31 @@ public final class StateGraphComputer {
     
     private static List<StateFactory> createStateFactories( final MetaStateFactory metaStateFactory){
         
-        return Arrays.asList( 
+        //The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more.
+        //  "V", "L", and "D" can never be subtracted.
+        return Arrays.asList(
+                // "I" can be subtracted from "V" and "X" only.
                 memoize(new StateFactoryImpl(I, 3,  Arrays.asList(V,X), metaStateFactory)),
+                
                 memoize(new StateFactoryImpl(V, 1,  Collections.emptyList(), metaStateFactory)),
+                
+                // "X" can be subtracted from "L" and "C" only.
                 memoize(new StateFactoryImpl(X, 3,  Arrays.asList(L,C), metaStateFactory)),
+                
                 memoize(new StateFactoryImpl(L, 1,  Collections.emptyList(), metaStateFactory)),
+                
+                //  "C" can be subtracted from "D" and "M" only.
                 memoize(new StateFactoryImpl(C, 3,  Arrays.asList(D,M), metaStateFactory)),
+                
                 memoize(new StateFactoryImpl(D, 1,  Collections.emptyList(), metaStateFactory)),
                 memoize(new StateFactoryImpl(M, 3,  Collections.emptyList(), metaStateFactory))
                 );
     }
 
     // Lambda memorization
-    public static StateFactory memoize(final StateFactory f) {
+    private static StateFactory memoize(final StateFactory f) {
         
-        final ConcurrentMap<Optional<RomanNumberLiteral>,State> lookup = new ConcurrentHashMap<>();
+        final Map<Optional<RomanNumberLiteral>,State> lookup = new ConcurrentHashMap<>();
         
         return new StateFactory() {
             

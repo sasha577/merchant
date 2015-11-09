@@ -2,13 +2,14 @@ package org.thoughtworks.assessment.merchant.romannumerals.factory;
 
 import java.util.List;
 
+import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.converter.RomanNumeralsConverterImpl;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.StateGraphComputer;
 
 public final class RomanNumeralsConverterFactory{
 
-    public static RomanNumeralsConverterImpl create(){
+    public static RomanNumeralsConverter create(){
         
         final List<State> stateGraph = new StateGraphComputer().create();
         

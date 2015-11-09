@@ -22,6 +22,8 @@ public final class RomanNumeralsConverterImpl implements RomanNumeralsConverter{
     @Override
     public ArabicNumber toArabicNumber(final RomanNumber number) throws WrongRomanNumberException{
         
+        checkNotEmpty(number);
+        
         Collection<State> possibleStates = stateGraph;
         int result = 0;
         
@@ -40,5 +42,11 @@ public final class RomanNumeralsConverterImpl implements RomanNumeralsConverter{
         }
         
         return new ArabicNumber(result);
+    }
+    
+    private static void checkNotEmpty(final RomanNumber number) throws WrongRomanNumberException{
+        if(number.getValue().isEmpty()){
+            throw new WrongRomanNumberException(number);
+        }
     }
 }

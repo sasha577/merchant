@@ -72,7 +72,6 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteral
             this.unknownLiteral = literal;
         }
 
-        @SuppressWarnings("unused")
         public LocalNumberLiteral getUnknownLiteral(){
             return unknownLiteral;
         }

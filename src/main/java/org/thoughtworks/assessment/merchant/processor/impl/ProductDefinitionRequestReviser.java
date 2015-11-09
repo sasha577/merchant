@@ -29,8 +29,8 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
 
     public ProductDefinitionRequestReviser(
             final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
-            final ProductCatalog productCatalog,
-            final RomanNumeralsConverter romanNumeralsConverter) {
+            final RomanNumeralsConverter romanNumeralsConverter,
+            final ProductCatalog productCatalog) {
         
         this.localNumberLiteralsRegistry = localNumberLiteralsRegistry;
         this.productCatalog = productCatalog;

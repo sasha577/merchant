@@ -2,12 +2,12 @@ package org.thoughtworks.assessment.merchant.romannumerals.impl.parser;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.ArabicNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 import org.thoughtworks.assessment.merchant.romannumerals.factory.RomanNumeralsConverterFactory;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
-import org.thoughtworks.assessment.merchant.romannumerals.impl.converter.RomanNumeralsConverterImpl;
 
 
 public final class StateGeneratorTest {
@@ -15,15 +15,13 @@ public final class StateGeneratorTest {
     @Test
     public void positive() throws WrongRomanNumberException {
 
+        Assert.assertEquals( ArabicNumber.valueOf(1), EVALUATOR.toArabicNumber(RomanNumber.valueOf("I")));
+
         Assert.assertEquals( ArabicNumber.valueOf(10), EVALUATOR.toArabicNumber(RomanNumber.valueOf("X")));
 
         Assert.assertEquals( ArabicNumber.valueOf(40), EVALUATOR.toArabicNumber(RomanNumber.valueOf("XL")));
 
         Assert.assertEquals( ArabicNumber.valueOf(20), EVALUATOR.toArabicNumber(RomanNumber.valueOf("XX")));
-
-        Assert.assertEquals( ArabicNumber.valueOf(30), EVALUATOR.toArabicNumber(RomanNumber.valueOf("XXX")));
-
-        Assert.assertEquals( ArabicNumber.valueOf(3), EVALUATOR.toArabicNumber(RomanNumber.valueOf("III")));
 
         Assert.assertEquals( ArabicNumber.valueOf(3000), EVALUATOR.toArabicNumber(RomanNumber.valueOf("MMM")));
 
@@ -37,6 +35,13 @@ public final class StateGeneratorTest {
         
         Assert.assertEquals( ArabicNumber.valueOf(1944), EVALUATOR.toArabicNumber(RomanNumber.valueOf("MCMXLIV")));
         
+        Assert.assertEquals( ArabicNumber.valueOf(3888), EVALUATOR.toArabicNumber(RomanNumber.valueOf("MMMDCCCLXXXVIII")));
+    }
+
+    @Test(expected=WrongRomanNumberException.class)
+    public void negative0() throws WrongRomanNumberException {
+
+        EVALUATOR.toArabicNumber(RomanNumber.valueOf(""));
     }
 
     @Test(expected=WrongRomanNumberException.class)
@@ -77,11 +82,11 @@ public final class StateGeneratorTest {
     }
 
 
-    private static final RomanNumeralsConverterImpl EVALUATOR = createEvaluater();
+    private static final RomanNumeralsConverter EVALUATOR = createEvaluator();
 
 
-    private static RomanNumeralsConverterImpl createEvaluater() {
-        final RomanNumeralsConverterImpl result = RomanNumeralsConverterFactory.create();
+    private static RomanNumeralsConverter createEvaluator() {
+        final RomanNumeralsConverter result = RomanNumeralsConverterFactory.create();
         System.out.print("number of states created: "+State.COUNTER);
         return result;
     }
