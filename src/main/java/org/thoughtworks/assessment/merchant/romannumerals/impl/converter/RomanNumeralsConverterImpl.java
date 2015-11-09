@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.romannumerals.impl;
+package org.thoughtworks.assessment.merchant.romannumerals.impl.converter;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,20 +9,20 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Arabi
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
-import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.State;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
 
 public final class RomanNumeralsConverterImpl implements RomanNumeralsConverter{
     
-    private final List<State> rootStates;
+    private final List<State> stateGraph;
     
-    public RomanNumeralsConverterImpl(final List<State> states) {
-        this.rootStates = states;
+    public RomanNumeralsConverterImpl(final List<State> stateGraph) {
+        this.stateGraph = stateGraph;
     }
 
     @Override
     public ArabicNumber toArabicNumber(final RomanNumber number) throws WrongRomanNumberException{
         
-        Collection<State> possibleStates = rootStates;
+        Collection<State> possibleStates = stateGraph;
         int result = 0;
         
         for(final RomanNumberLiteral s: number.getValue()){

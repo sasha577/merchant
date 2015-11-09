@@ -6,7 +6,8 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Arabi
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 import org.thoughtworks.assessment.merchant.romannumerals.factory.RomanNumeralsConverterFactory;
-import org.thoughtworks.assessment.merchant.romannumerals.impl.RomanNumeralsConverterImpl;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.converter.RomanNumeralsConverterImpl;
 
 
 public final class StateGeneratorTest {
@@ -80,7 +81,7 @@ public final class StateGeneratorTest {
 
 
     private static RomanNumeralsConverterImpl createEvaluater() {
-        final RomanNumeralsConverterImpl result = new RomanNumeralsConverterFactory().create();
+        final RomanNumeralsConverterImpl result = RomanNumeralsConverterFactory.create();
         System.out.print("number of states created: "+State.COUNTER);
         return result;
     }

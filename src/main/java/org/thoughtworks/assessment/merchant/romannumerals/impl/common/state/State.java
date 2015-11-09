@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.romannumerals.impl.parser;
+package org.thoughtworks.assessment.merchant.romannumerals.impl.common.state;
 
 import java.util.Collection;
 import java.util.Optional;

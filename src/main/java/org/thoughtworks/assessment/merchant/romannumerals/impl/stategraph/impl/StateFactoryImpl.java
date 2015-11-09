@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.romannumerals.impl.parser;
+package org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +9,9 @@ import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
-import org.thoughtworks.assessment.merchant.romannumerals.impl.parser.interfaces.StateFactory;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.MetaStateFactory;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.statefactory.StateFactory;
 
 public final class StateFactoryImpl implements StateFactory{
 
