@@ -1,6 +1,7 @@
 package org.thoughtworks.assessment.merchant.processor.impl;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ public final class LocalNumbeLiteralRequestReviser implements RequestReviser{
     }
 
     @Override
-    public Replay process(final Request request) {
+    public Optional<Replay> process(final Request request) {
 
         final Matcher matcher = IS_LOCAL_NUMBER_REQUEST.matcher(request.getValue());
 
@@ -29,7 +30,7 @@ public final class LocalNumbeLiteralRequestReviser implements RequestReviser{
         assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
 
         final LocalNumberLiteral localLiteral = new LocalNumberLiteral(matcher.group(1));
-        final char literal = matcher.group(1).charAt(0);
+        final char literal = matcher.group(2).charAt(0);
 
         try{
 
@@ -37,11 +38,11 @@ public final class LocalNumbeLiteralRequestReviser implements RequestReviser{
 
             localNumberLiteralsRegistry.registerLocalLiteral(localLiteral , romanLiteral);
 
-            return Replay.NONE;
+            return Optional.empty();
 
         }catch(final NoSuchElementException e){
 
-            return new Replay(String.format("literal '%s' is not valid roman number.", literal));
+            return Optional.of(new Replay(String.format("literal '%s' is not valid roman number.", literal)));
         }
     }
 

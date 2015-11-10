@@ -2,6 +2,7 @@ package org.thoughtworks.assessment.merchant.processor.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +40,7 @@ public final class PriceRequestReviser implements RequestReviser{
     }
 
     @Override
-    public Replay process(final Request request) {
+    public Optional<Replay> process(final Request request) {
 
         final Matcher matcher = IS_PRODUCT_DEFINITION_REQUEST.matcher(request.getValue());
 
@@ -63,11 +64,11 @@ public final class PriceRequestReviser implements RequestReviser{
             
             final int result = productPrice.getValue().multiply(Fraction.of(count)).toInteger();
             
-            return new Replay(String.format("%s is %d Credits", localNumber.toLiteral(), result));
+            return Optional.of(new Replay(String.format("%s is %d Credits", localNumber.toLiteral(), result)));
 
         }catch(final UnknownLiteral|WrongRomanNumberException|NotDefinedProductException e){
             
-            return new Replay(e.getMessage());
+            return Optional.of(new Replay(e.getMessage()));
         }
     }
 

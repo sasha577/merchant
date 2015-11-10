@@ -2,6 +2,7 @@ package org.thoughtworks.assessment.merchant.processor.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,7 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
     }
 
     @Override
-    public Replay process(final Request request) {
+    public Optional<Replay> process(final Request request) {
 
         final Matcher matcher = IS_PRODUCT_DEFINITION_REQUEST.matcher(request.getValue());
 
@@ -61,11 +62,11 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
             
             productCatalog.addOrReplaceProduct(productName, new PriceInCredits(Fraction.of(sumPrice, amount)));
             
-            return Replay.NONE;
+            return Optional.empty();
 
         }catch(final UnknownLiteral|WrongRomanNumberException e){
             
-            return new Replay(e.getMessage());
+            return Optional.of(new Replay(e.getMessage()));
         }
         
     }
@@ -82,22 +83,22 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
 
         final Collection<LocalNumberLiteral> literals = new ArrayList<>();
 
-        for( int i = 0; i < matcher.groupCount()-2; i+=2){
+        for( int i = 0; i < matcher.groupCount()-2; i+=1){
 
             literals.add(new LocalNumberLiteral(matcher.group(i)));
         }
 
         final ProductName productName = 
-                new ProductName(matcher.group(matcher.groupCount()-2));
+                new ProductName(matcher.group(matcher.groupCount()-1));
 
         final int price = 
-                Integer.valueOf(matcher.group(matcher.groupCount()-1));
+                Integer.valueOf(matcher.group(matcher.groupCount()));
 
         return Pair.make(Pair.make(new LocalNumber(literals), productName), price);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
-            Pattern.compile("^((\\w+)\\s+)+is\\s+(\\d+)\\s+Credits$");
+            Pattern.compile("(\\w+ )+is (\\d+) Credits");
 
 
 }

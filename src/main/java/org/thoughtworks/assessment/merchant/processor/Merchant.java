@@ -1,8 +1,9 @@
 package org.thoughtworks.assessment.merchant.processor;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
@@ -31,22 +32,26 @@ public final class Merchant {
     }
     
     
-    public void process( final BufferedReader in, final BufferedWriter out ){
+    public void process( final Reader in, final Writer out ){
+        
+        final BufferedReader bin = new BufferedReader(in);
         
         String str;
         
-        while( (str=readLine(in))!=null && str.length()!=0 ){
+        while( (str=readLine(bin))!=null && str.length()!=0 ){
             
             final Request request = new Request(str);
             final Optional<RequestReviser> requestReviser = findResponsibleRequestReviser(request);
             
             if(requestReviser.isPresent()){
                 
-                final Replay replay = requestReviser.get().process(request);
-                write(out, replay);
+                final Optional<Replay> replay = requestReviser.get().process(request);
+                if(replay.isPresent()){
+                    writeln(out, replay.get());
+                }
             }
             else{
-                write(out, NO_IDEA_REPLAY);
+                writeln(out, NO_IDEA_REPLAY);
             }
         }
         
@@ -62,9 +67,10 @@ public final class Merchant {
     }
 
 
-    private void write(final BufferedWriter out, final Replay replay){
+    private void writeln(final Writer out, final Replay replay){
         try {
             out.write(replay.getValue());
+            out.write('\n');
             out.flush();
         } catch (final IOException e) {
             throw new RuntimeException("unable to write out respose.", e);

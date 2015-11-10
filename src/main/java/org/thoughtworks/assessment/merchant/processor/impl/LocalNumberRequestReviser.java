@@ -2,6 +2,7 @@ package org.thoughtworks.assessment.merchant.processor.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +31,7 @@ public final class LocalNumberRequestReviser implements RequestReviser{
     }
 
     @Override
-    public Replay process(final Request request) {
+    public Optional<Replay> process(final Request request) {
 
         final Matcher matcher = HOW_MUCH_IS_REQUEST.matcher(request.getValue());
 
@@ -47,11 +48,11 @@ public final class LocalNumberRequestReviser implements RequestReviser{
             
             final int result = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
-            return new Replay(String.format("%s is %d", localNumber.toLiteral(), result));
+            return Optional.of(new Replay(String.format("%s is %d", localNumber.toLiteral(), result)));
             
         }catch(final UnknownLiteral|WrongRomanNumberException e){
             
-            return new Replay(e.getMessage());
+            return Optional.of(new Replay(e.getMessage()));
             
         }
     }
@@ -77,7 +78,7 @@ public final class LocalNumberRequestReviser implements RequestReviser{
     }
 
     private static final Pattern HOW_MUCH_IS_REQUEST = 
-            Pattern.compile("^how\\s+much\\s+is\\s+((\\w+)\\s+)+is\\s+(\\d+)\\s*?$");
+            Pattern.compile("^how\\s+much\\s+is\\s+((\\w+)\\s+)+?is\\s+(\\d+)\\s*?$");
 
 
 }
