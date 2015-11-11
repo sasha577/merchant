@@ -85,7 +85,7 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
 
         for( int i = 0; i < matcher.groupCount()-2; i+=1){
 
-            literals.add(new LocalNumberLiteral(matcher.group(i)));
+            literals.add(LocalNumberLiteral.of(matcher.group(i)));
         }
 
         final ProductName productName = 

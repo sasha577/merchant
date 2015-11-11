@@ -86,7 +86,7 @@ public final class PriceRequestReviser implements RequestReviser{
 
         for( int i = 0; i < matcher.groupCount()-1; ++i){
 
-            literals.add(new LocalNumberLiteral(matcher.group(i)));
+            literals.add(LocalNumberLiteral.of(matcher.group(i)));
         }
 
         final ProductName productName = 

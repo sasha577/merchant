@@ -1,11 +1,12 @@
 package org.thoughtworks.assessment.merchant.processor.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
@@ -67,18 +68,14 @@ public final class LocalNumberRequestReviser implements RequestReviser{
     private static LocalNumber parseRequest( 
             final Request request, final Matcher matcher){
 
-        final Collection<LocalNumberLiteral> literals = new ArrayList<>();
-
-        for( int i = 0; i < matcher.groupCount(); ++i){
-
-            literals.add(new LocalNumberLiteral(matcher.group(i)));
-        }
-
+        final List<LocalNumberLiteral> literals = 
+                CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")),LocalNumberLiteral::of);
+        
         return new LocalNumber(literals);
     }
 
     private static final Pattern HOW_MUCH_IS_REQUEST = 
-            Pattern.compile("^how\\s+much\\s+is\\s+((\\w+)\\s+)+?is\\s+(\\d+)\\s*?$");
+            Pattern.compile("how much is ((\\w+ )+)\\?$");
 
 
 }

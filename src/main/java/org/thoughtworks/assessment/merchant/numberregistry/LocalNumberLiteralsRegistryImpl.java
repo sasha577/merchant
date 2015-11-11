@@ -47,7 +47,7 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteral
             
         }catch(final _UnknownLiteral ex){
             
-            throw new UnknownLiteral(ex);
+            throw new UnknownLiteral(ex.getUnknownLiteral());
         }
     }
 

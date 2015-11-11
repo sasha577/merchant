@@ -29,7 +29,7 @@ public final class LocalNumbeLiteralRequestReviser implements RequestReviser{
 
         assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
 
-        final LocalNumberLiteral localLiteral = new LocalNumberLiteral(matcher.group(1));
+        final LocalNumberLiteral localLiteral = LocalNumberLiteral.of(matcher.group(1));
         final char literal = matcher.group(2).charAt(0);
 
         try{
@@ -52,5 +52,5 @@ public final class LocalNumbeLiteralRequestReviser implements RequestReviser{
         return IS_LOCAL_NUMBER_REQUEST.matcher(request.getValue()).matches();
     }
 
-    private static final Pattern IS_LOCAL_NUMBER_REQUEST = Pattern.compile("^(\\w+)\\s+is\\s+(\\w)$");
+    private static final Pattern IS_LOCAL_NUMBER_REQUEST = Pattern.compile("(\\w+) is (\\w)$");
 }
