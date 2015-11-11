@@ -1,11 +1,12 @@
 package org.thoughtworks.assessment.merchant.processor.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.common.types.Fraction;
 import org.thoughtworks.assessment.merchant.common.types.Pair;
 import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
@@ -81,24 +82,20 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
     private static Pair<Pair<LocalNumber, ProductName>, Integer> parseRequest( 
             final Request request, final Matcher matcher){
 
-        final Collection<LocalNumberLiteral> literals = new ArrayList<>();
-
-        for( int i = 0; i < matcher.groupCount()-2; i+=1){
-
-            literals.add(LocalNumberLiteral.of(matcher.group(i)));
-        }
+        final List<LocalNumberLiteral> literals = 
+                CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")),LocalNumberLiteral::of);
 
         final ProductName productName = 
-                new ProductName(matcher.group(matcher.groupCount()-1));
+                new ProductName(matcher.group(2));
 
         final int price = 
-                Integer.valueOf(matcher.group(matcher.groupCount()));
+                Integer.valueOf(matcher.group(3));
 
         return Pair.make(Pair.make(new LocalNumber(literals), productName), price);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
-            Pattern.compile("(\\w+ )+is (\\d+) Credits");
+            Pattern.compile("(\\w+ )(\\w+) +is (\\d+) Credits");
 
 
 }

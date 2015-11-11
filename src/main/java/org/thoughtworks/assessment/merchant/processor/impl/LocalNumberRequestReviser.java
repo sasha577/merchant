@@ -64,12 +64,11 @@ public final class LocalNumberRequestReviser implements RequestReviser{
         return HOW_MUCH_IS_REQUEST.matcher(request.getValue()).matches();
     }
 
-
     private static LocalNumber parseRequest( 
             final Request request, final Matcher matcher){
 
         final List<LocalNumberLiteral> literals = 
-                CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")),LocalNumberLiteral::of);
+                CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")), LocalNumberLiteral::of);
         
         return new LocalNumber(literals);
     }
