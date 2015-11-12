@@ -19,7 +19,7 @@ import org.thoughtworks.assessment.merchant.productcatalog.api.exceptions.NotDef
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.factory.RomanNumeralsConverterFactory;
 
-public class PriceRequestReviserTest {
+public final class PriceRequestReviserTest {
 
     @Test
     public void testProcess() throws Exception {

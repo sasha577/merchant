@@ -10,7 +10,7 @@ import org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.Unknow
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
-public class LocalNumberLiteralsRegistryImplTest {
+public final class LocalNumberLiteralsRegistryImplTest {
 
     @Test
     public void registerLocalLiteral() throws Exception {

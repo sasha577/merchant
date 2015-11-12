@@ -3,7 +3,7 @@ package org.thoughtworks.assessment.merchant.common.types;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class FractionTest {
+public final class FractionTest {
 
     @Test
     public void testToInteger() {

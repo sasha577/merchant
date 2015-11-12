@@ -18,7 +18,7 @@ import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.Prod
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.factory.RomanNumeralsConverterFactory;
 
-public class ProductDefinitionRequestReviserTest {
+public final class ProductDefinitionRequestReviserTest {
 
     @Test
     public void testProcess() throws Exception {
