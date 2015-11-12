@@ -32,7 +32,7 @@ public final class Pair<T1,T2> extends AbstractPair<T1, T2> implements Serializa
      * @param second second object
      * @return a pair of two object
      */
-    public static <T1,T2> Pair<T1,T2> make(final T1 first, final T2 second) {
+    public static <T1,T2> Pair<T1,T2> of(final T1 first, final T2 second) {
         return new Pair<T1,T2>(first, second);
     }
 

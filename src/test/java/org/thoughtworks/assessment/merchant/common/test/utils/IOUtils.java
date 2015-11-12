@@ -10,7 +10,8 @@ public final class IOUtils {
 
     public static String toString(final InputStream input) throws IOException {
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(input))) {
-            return buffer.lines().collect(Collectors.joining("\n"));
+            final String result = buffer.lines().collect(Collectors.joining("\n"));
+            return result;//.substring(0, result.length()-1);
         }
     }
 

@@ -69,7 +69,6 @@ public final class Fraction extends AbstractPair<Integer, Integer>{
         return of(newNumerator, newDenominator);
     }
 
-
     private int getNumerator() {
         return super.getFirst();
     }
@@ -77,7 +76,4 @@ public final class Fraction extends AbstractPair<Integer, Integer>{
     private int getDenominator() {
         return super.getSecond();
     }
-
-
-    
 }

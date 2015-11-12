@@ -27,7 +27,7 @@ public class ProductDefinitionRequestReviserTest {
                 EasyMock.mock(LocalNumberLiteralsRegistry.class);
 
         final RomanNumber romanNumber = 
-                RomanNumber.valueOf("IV");
+                RomanNumber.valueOf("II");
         
         final LocalNumber localNumber = 
                 new LocalNumber(Arrays.asList(LocalNumberLiteral.of("pish"), LocalNumberLiteral.of("pish")));
@@ -37,7 +37,7 @@ public class ProductDefinitionRequestReviserTest {
         
         final ProductCatalog productCatalog = EasyMock.mock(ProductCatalog.class);;
 
-        productCatalog.addOrReplaceProduct(new ProductName("Iron"),new PriceInCredits(Fraction.of(4,3910)));
+        productCatalog.addOrReplaceProduct(new ProductName("Iron"),new PriceInCredits(Fraction.of(3910,2)));
         
         EasyMock.replay(localNumberLiteralsRegistry);
         EasyMock.replay(productCatalog);

@@ -13,7 +13,7 @@ public final class State extends AbstractPair<Pair<RomanNumberLiteral,Integer>, 
     public static int COUNTER = 0;
     
     public State(final RomanNumberLiteral literal, final Collection<State> successors, final Optional<RomanNumberLiteral> predecessor) {
-        super(Pair.make(literal,calculateSubstractionCompensation(literal,predecessor)), successors);
+        super(Pair.of(literal,calculateSubstractionCompensation(literal,predecessor)), successors);
         ++COUNTER;
     }
 

@@ -38,7 +38,7 @@ public final class Merchant {
         
         String str;
         
-        while( (str=readLine(bin))!=null && str.length()!=0 ){
+        while( (str=readln(bin))!=null ){
             
             final Request request = new Request(str);
             final Optional<RequestReviser> requestReviser = findResponsibleRequestReviser(request);
@@ -58,7 +58,7 @@ public final class Merchant {
     }
 
 
-    private String readLine(final BufferedReader in){
+    private String readln(final BufferedReader in){
         try {
             return in.readLine();
         } catch (final IOException e) {

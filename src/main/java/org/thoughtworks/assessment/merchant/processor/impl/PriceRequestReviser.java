@@ -91,7 +91,7 @@ public final class PriceRequestReviser implements RequestReviser{
         final ProductName productName = 
                 new ProductName(matcher.group(3));
 
-        return Pair.make(new LocalNumber(literals), productName);
+        return Pair.of(new LocalNumber(literals), productName);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 

@@ -92,7 +92,7 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
         final int price = 
                 Integer.valueOf(matcher.group(4));
 
-        return Pair.make(Pair.make(new LocalNumber(literals), productName), price);
+        return Pair.of(Pair.of(new LocalNumber(literals), productName), price);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
