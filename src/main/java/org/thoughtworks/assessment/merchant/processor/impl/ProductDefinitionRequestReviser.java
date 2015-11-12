@@ -86,16 +86,16 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
                 CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")),LocalNumberLiteral::of);
 
         final ProductName productName = 
-                new ProductName(matcher.group(2));
+                new ProductName(matcher.group(3));
 
         final int price = 
-                Integer.valueOf(matcher.group(3));
+                Integer.valueOf(matcher.group(4));
 
         return Pair.make(Pair.make(new LocalNumber(literals), productName), price);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
-            Pattern.compile("(\\w+ )(\\w+) +is (\\d+) Credits");
+            Pattern.compile("((\\w+ )+?)(\\w+) is (\\d+) Credits");
 
 
 }

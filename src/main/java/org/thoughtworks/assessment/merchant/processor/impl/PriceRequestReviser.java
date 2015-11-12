@@ -63,9 +63,11 @@ public final class PriceRequestReviser implements RequestReviser{
             
             final PriceInCredits productPrice = productCatalog.getPrice(productName);
             
-            final int result = productPrice.getValue().multiply(Fraction.of(count)).toInteger();
+            final Fraction value = productPrice.getValue();
             
-            return Optional.of(new Replay(String.format("%s is %d Credits", localNumber.toLiteral(), result)));
+            final int result = value.multiply(Fraction.of(count)).toInteger();
+            
+            return Optional.of(new Replay(String.format("%s %s is %d Credits", localNumber.toLiteral(), productName.getValue(), result)));
 
         }catch(final UnknownLiteral|WrongRomanNumberException|NotDefinedProductException e){
             
@@ -87,13 +89,11 @@ public final class PriceRequestReviser implements RequestReviser{
                 CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")),LocalNumberLiteral::of);
 
         final ProductName productName = 
-                new ProductName(matcher.group(2));
+                new ProductName(matcher.group(3));
 
         return Pair.make(new LocalNumber(literals), productName);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
-            Pattern.compile("how many Credits is ((\\w+) +)(\\w+) \\?$");
-
-
+            Pattern.compile("how many Credits is ((\\w+ )+?)(\\w+) \\?");
 }

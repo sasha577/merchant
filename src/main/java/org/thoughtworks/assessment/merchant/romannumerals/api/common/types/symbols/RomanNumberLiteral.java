@@ -2,7 +2,6 @@ package org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symb
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -67,15 +66,4 @@ public enum RomanNumberLiteral{
         return result.get();
     }
     
-    public static final Comparator<RomanNumberLiteral> VALUE_COMPARATOR = new Comparator<RomanNumberLiteral>() {
-        
-        @Override
-        public int compare(final RomanNumberLiteral o1, final RomanNumberLiteral o2) {
-            assert o1 != null;
-            assert o2 != null;
-
-            return o1.value - o2.value;
-        }
-    };
-
 }

@@ -10,17 +10,6 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbo
 
 public final class LocalNumbeLiteralRequestReviserTest {
 
-
-    //    @Rule
-    //    public EasyMockRule rule = new EasyMockRule(this);
-    //
-    //    @Mock
-    //    private ProductCatalog productCatalog;
-    //    
-    //    @Mock
-    //    private LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
-
-
     @Test
     public void testProcess() {
 
@@ -29,6 +18,7 @@ public final class LocalNumbeLiteralRequestReviserTest {
         
         localNumberLiteralsRegistry.registerLocalLiteral(LocalNumberLiteral.of("bock"), RomanNumberLiteral.C);
         localNumberLiteralsRegistry.registerLocalLiteral(LocalNumberLiteral.of("dock"), RomanNumberLiteral.I);
+
         
         EasyMock.replay(localNumberLiteralsRegistry);
 

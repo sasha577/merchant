@@ -63,7 +63,7 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteral
 
 
     @SuppressWarnings("serial")
-    static final class _UnknownLiteral extends RuntimeException{
+    private static final class _UnknownLiteral extends RuntimeException{
 
         private final LocalNumberLiteral unknownLiteral;
 

@@ -13,25 +13,19 @@ import org.thoughtworks.assessment.merchant.factory.common.MerchantFactory;
 import org.thoughtworks.assessment.merchant.processor.data.TestResources;
 
 
-public class MerchantTest {
+public final class MerchantTest {
 
     @Test
     public void testProcess() throws Exception {
-        
-        final Merchant merchant = MerchantFactory.create();
         
         final Reader in = new InputStreamReader(TestResources.INPUT.getResource());
         
         final ByteArrayOutputStream actual = new ByteArrayOutputStream();
         
         final Writer out = new OutputStreamWriter(actual);
-        
-        
-        merchant.process(in, out);
+
+        MerchantFactory.create().process(in, out);
         
         Assert.assertEquals(IOUtils.toString(TestResources.EXPECTED_OUTPUT.getResource()), actual.toString());
     }
-
-    
-
 }
