@@ -52,16 +52,17 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
         
         final LocalNumber localNumber = parsedRequest.getFirstValue().getFirstValue();
         final ProductName productName = parsedRequest.getFirstValue().getSecondValue();
-        final int amount = parsedRequest.getSecondValue();
+        
+        final int sumPrice = parsedRequest.getSecondValue();
 
         try{
             
             final RomanNumber romanNumber = 
                     localNumberLiteralsRegistry.toRomanNumber(localNumber);
             
-            final int sumPrice = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
+            final int amount = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
-            productCatalog.addOrReplaceProduct(productName, new PriceInCredits(Fraction.of(sumPrice, amount)));
+            productCatalog.addOrReplaceProduct(productName, new PriceInCredits(Fraction.of(sumPrice,amount)));
             
             return Optional.empty();
 

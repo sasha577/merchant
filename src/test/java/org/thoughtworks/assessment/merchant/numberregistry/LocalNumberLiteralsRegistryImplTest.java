@@ -42,7 +42,7 @@ public class LocalNumberLiteralsRegistryImplTest {
         final LocalNumber localNumber = 
                 new LocalNumber(Arrays.asList(LocalNumberLiteral.of("pink"),LocalNumberLiteral.of("pong1")));
         
-        final RomanNumber actual = numberLiteralsRegistry.toRomanNumber(localNumber);
+        numberLiteralsRegistry.toRomanNumber(localNumber);
         
     }
 
