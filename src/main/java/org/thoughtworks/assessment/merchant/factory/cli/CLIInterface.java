@@ -30,8 +30,6 @@ public final class CLIInterface {
 				final Writer out = new OutputStreamWriter(System.out) ){
 
 			process(in, out);
-
-
 		}
 		catch(final IOException e){
 			throw new RuntimeException("unexpected problem during IO operation", e);
@@ -39,7 +37,12 @@ public final class CLIInterface {
 
 	}
 
-
+    /**
+     * Processes the requests.
+     *
+     * @param in an input stream the requests are read out.
+     * @param out an output stream the replies are written to.
+     */
 	public static void process(final Reader in, final Writer out) {
 
 		final BufferedReader bin = new BufferedReader(in);
@@ -51,10 +54,9 @@ public final class CLIInterface {
 		while( (request=readNextRequest(bin)).isPresent() ){
 
 			Optional<Reply> reply = merchant.process(request.get());
-			writeReplay(reply, out);
+			writeReply(reply, out);
 		}
 	}
-
 
 	/**
 	 * Read out the next request from the input stream.
@@ -74,7 +76,7 @@ public final class CLIInterface {
 	/**
 	 * Writes the reply to the output stream. 
 	 */
-	private static void writeReplay(final Optional<Reply> reply, final Writer out){
+	private static void writeReply(final Optional<Reply> reply, final Writer out){
 		if(reply.isPresent()) try {
 			out.write(reply.get().getValue());
 			out.write('\n');
