@@ -16,12 +16,12 @@ import org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog;
 import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 
 /**
- * Implements the main work flow of the program.  
- * Receives currencies and products requests and provide replays.
+ * The business interface to the program.  
+ * Receives the currencies and the products requests and provides the replies.
  */
 public final class Merchant {
 
-	private final Collection<RequestHandler> revisers;
+	private final Collection<RequestHandler> handlers;
 
 	/**
 	 * Constructor.
@@ -35,31 +35,31 @@ public final class Merchant {
 			final RomanNumeralsConverter romanNumeralsConverter,
 			final ProductCatalog productCatalog) {
 
-		this.revisers = createRequestHandlers(localNumeralsRegistry,romanNumeralsConverter,productCatalog);
+		this.handlers = createRequestHandlers(localNumeralsRegistry,romanNumeralsConverter,productCatalog);
 	}
 
 
 	/**
 	 * Replies to the requests.
+	 * Because not all requests expect a replay the result is optional.
 	 */
 	public Optional<Reply> process( Request request ){
 
 		final Optional<RequestHandler> handler = 
-				findResponsibleRequestReviser(request);
+				findResponsibleHandler(request);
 
 		return handler.isPresent() ? handler.get().process(request) : NO_IDEA_REPLAY;
 	}
 
 	/**
-	 * Searches for the request reviser responsible for the request.  
+	 * Searches for the request handler responsible for the request.  
 	 */
-	private Optional<RequestHandler> findResponsibleRequestReviser(final Request request){
+	private Optional<RequestHandler> findResponsibleHandler(final Request request){
 
-		return revisers.stream().filter(p -> p.isResposibleFor(request)).findFirst();
+		return handlers.stream().filter(p -> p.isResposibleFor(request)).findFirst();
 	}
 
 	/**
-	 * Factory method.
 	 * Creates a list of supported request handlers. 
 	 */
 	private static Collection<RequestHandler> createRequestHandlers(

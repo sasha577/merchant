@@ -10,7 +10,7 @@ import org.thoughtworks.assessment.merchant.common.types.base.utils.ObjectUtils;
 * 
 * To define a new immutable Value-Object-Class you have only to inherit from this one.
 * 
-* The standard Object-operation are defined as final in order to prevent overriding and potential contract break.
+* The standard Object-operation are defined as final in order to prevent overriding and so prevents the contract break.
 *
 */
 @SuppressWarnings("serial")

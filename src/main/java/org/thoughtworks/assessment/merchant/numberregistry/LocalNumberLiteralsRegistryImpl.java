@@ -13,26 +13,23 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Roman
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
 /**
- * <p>LocalNumberLiteralsRegistryImpl class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Keeps the mapping between the local numerals and the Roman numerals.
  */
 public final class LocalNumberLiteralsRegistryImpl implements LocalNumeralsRegistry{
 
+	/**
+	 * the map between local and Roman literals.
+	 */
     private final Map<LocalNumberLiteral,RomanNumberLiteral>  romanByLocalLiteral;
 
     /**
-     * <p>Constructor for LocalNumberLiteralsRegistryImpl.</p>
+     * Constructor.
      */
     public LocalNumberLiteralsRegistryImpl() {
 
         this.romanByLocalLiteral = new HashMap<LocalNumberLiteral, RomanNumberLiteral>();
     }
 
-    /* (non-Javadoc)
-     * @see org.thoughtworks.assessment.merchant.numberregistry.LocalNumberLiteralsRegistry#registerLocalLiteral(org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumberLiteral, org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral)
-     */
     /** {@inheritDoc} */
     @Override
     public void registerLocalLiteral(final LocalNumberLiteral localLiteral, final RomanNumberLiteral romanLiteral){
@@ -40,9 +37,6 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumeralsRegis
         romanByLocalLiteral.put(localLiteral, romanLiteral);
     }
 
-    /* (non-Javadoc)
-     * @see org.thoughtworks.assessment.merchant.numberregistry.LocalNumberLiteralsRegistry#toRomanNumber(org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumber)
-     */
     /** {@inheritDoc} */
     @Override
     public RomanNumber toRomanNumber(final LocalNumber localNumber) throws UnknownLiteral{
@@ -62,6 +56,9 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumeralsRegis
         }
     }
 
+    /**
+     * check if literal is found and throws _UnknownLiteral exception in other case.
+     */
     private static RomanNumberLiteral throwExceptionIfNull(final LocalNumberLiteral p, final RomanNumberLiteral result) {
         if(result != null){
             return result;
@@ -73,6 +70,11 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumeralsRegis
     }
 
 
+    /**
+     * 
+     * Because checked exceptions are not allowed in the function we have to tunnel the exception as unchecked. 
+     *
+     */
     @SuppressWarnings("serial")
     private static final class _UnknownLiteral extends RuntimeException{
 

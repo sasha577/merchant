@@ -7,27 +7,24 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Roman
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
 /**
- * <p>LocalNumberLiteralsRegistry interface.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Keeps the mapping between the local numerals and the Roman numerals.
  */
 public interface LocalNumeralsRegistry {
 
     /**
-     * <p>registerLocalLiteral.</p>
+     * Registers the local number.
      *
-     * @param localLiteral a {@link org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral} object.
-     * @param romanLiteral a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
+     * @param localLiteral a local number literal to register.
+     * @param romanLiteral a Roman number the local number literal will be associated to.
      */
     public void registerLocalLiteral(LocalNumberLiteral localLiteral, RomanNumberLiteral romanLiteral);
 
     /**
-     * <p>toRomanNumber.</p>
+     * Converts the local number to the Roman number.
      *
-     * @param localNumber a {@link org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber} object.
-     * @return a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber} object.
-     * @throws org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.UnknownLiteral if any.
+     * @param localNumber a local number to convert.
+     * @return a Roman number.
+     * @throws UnknownLiteral if localNumber contains a literal have not been registered before.
      */
     public RomanNumber toRomanNumber(LocalNumber localNumber) throws UnknownLiteral;
 
