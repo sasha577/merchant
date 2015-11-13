@@ -25,7 +25,7 @@ public final class RomanNumber extends SingleBasedValue<Collection<RomanNumberLi
     public static RomanNumber valueOf(final String romanNumber){
 
         final List<RomanNumberLiteral> string = 
-                romanNumber.chars().mapToObj(c -> RomanNumberLiteral.getBy((char)c)).collect(Collectors.toList());
+                romanNumber.chars().mapToObj(c -> RomanNumberLiteral.of((char)c)).collect(Collectors.toList());
         
         return new RomanNumber( string );
     }

@@ -56,25 +56,20 @@ public final class ProductDefinitionRequestHandler implements RequestHandler{
     @Override
     public Optional<Reply> process(final Request request) {
 
-        final Matcher matcher = IS_PRODUCT_DEFINITION_REQUEST.matcher(request.getValue());
-
-        final boolean matches = matcher.matches();
-
-        assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
-
-        final Pair<Pair<LocalNumber, ProductName>, Integer> parsedRequest = parseRequest(request,matcher);
-        
-        final LocalNumber localNumber = parsedRequest.getFirstValue().getFirstValue();
-        final ProductName productName = parsedRequest.getFirstValue().getSecondValue();
-        
-        final int sumPrice = parsedRequest.getSecondValue();
-
         try{
+
+            final Pair<Pair<LocalNumber, ProductName>, Integer> parsedRequest = parseRequest(request);
             
+            final LocalNumber localNumber = parsedRequest.getFirstValue().getFirstValue();
+            final ProductName productName = parsedRequest.getFirstValue().getSecondValue();
+            final int sumPrice = parsedRequest.getSecondValue();
+
             final RomanNumber romanNumber = 
                     localNumeralsRegistry.toRomanNumber(localNumber);
             
-            final int amount = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
+            // amount can not be zero because zero does not exist in Roman numeral system. 
+            final int amount = 
+                    romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
             productCatalog.addOrReplaceProduct(productName, new PriceInCredits(Fraction.of(sumPrice,amount)));
             
@@ -91,12 +86,17 @@ public final class ProductDefinitionRequestHandler implements RequestHandler{
     @Override
     public boolean isResposibleFor(final Request request) {
 
-        return IS_PRODUCT_DEFINITION_REQUEST.matcher(request.getValue()).matches();
+        return REQUEST_PATTERN.matcher(request.getValue()).matches();
     }
 
 
-    private static Pair<Pair<LocalNumber, ProductName>, Integer> parseRequest( 
-            final Request request, final Matcher matcher){
+    private static Pair<Pair<LocalNumber, ProductName>, Integer> parseRequest(final Request request){
+
+        final Matcher matcher = REQUEST_PATTERN.matcher(request.getValue());
+
+        final boolean matches = matcher.matches();
+
+        assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
 
         final List<LocalNumberLiteral> literals = 
                 CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")),LocalNumberLiteral::of);
@@ -110,8 +110,7 @@ public final class ProductDefinitionRequestHandler implements RequestHandler{
         return Pair.of(Pair.of(new LocalNumber(literals), productName), price);
     }
 
-    private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
+    private static final Pattern REQUEST_PATTERN = 
             Pattern.compile("((\\w+ )+?)(\\w+) is (\\d+) Credits");
-
 
 }

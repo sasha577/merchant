@@ -28,7 +28,7 @@ public final class RomanNumberSymbolTest {
 
     @Test
     public void testGetBy() {
-        Assert.assertEquals(RomanNumberLiteral.V, RomanNumberLiteral.getBy('V'));
+        Assert.assertEquals(RomanNumberLiteral.V, RomanNumberLiteral.of('V'));
     }
 
 }

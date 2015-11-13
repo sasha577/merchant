@@ -6,25 +6,21 @@ import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 
 /**
- * <p>RequestReviser interface.</p>
+ * Request handler.
  *
- * @author arubinov
- * @version $Id: $Id
+ * In order to decomposes the algorithm
+ * there is a dedicated handler type for each type of request.
+ *   
  */
 public interface RequestHandler {
 
     /**
-     * <p>process.</p>
-     *
-     * @param request a {@link org.thoughtworks.assessment.merchant.processor.common.types.Request} object.
-     * @return a {@link java.util.Optional} object.
+     * Provides a reply to the request.  
      */
     public Optional<Reply> process(final Request request);
+
     /**
-     * <p>isResposibleFor.</p>
-     *
-     * @param request a {@link org.thoughtworks.assessment.merchant.processor.common.types.Request} object.
-     * @return a boolean.
+     * Checks whether this handler can handle the given request.
      */
     public boolean isResposibleFor(final Request request);
 }

@@ -3,10 +3,10 @@ package org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symb
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
+import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanLiteral;
 
 /**
  *
@@ -76,14 +76,17 @@ public enum RomanNumberLiteral{
      *
      * @param c char to search
      * @return enum item
-     * @throws NoSuchElementException if not found
+     * @throws WrongRomanLiteral if not found
      */
-    public static RomanNumberLiteral getBy(final char c){
+    public static RomanNumberLiteral of(final char c){
         
         final List<RomanNumberLiteral> allValues = Arrays.asList(RomanNumberLiteral.values());
         
         final Optional<RomanNumberLiteral> result = allValues.stream().filter(p -> p.name().charAt(0)==c).findFirst();
         
+        if(!result.isPresent()){
+            throw new WrongRomanLiteral(c);
+        }
         return result.get();
     }
     

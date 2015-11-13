@@ -21,6 +21,9 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConve
  */
 public final class Merchant {
 
+    /**
+     * the collection of the request handlers.
+     */
 	private final Collection<RequestHandler> handlers;
 
 	/**
@@ -43,7 +46,7 @@ public final class Merchant {
 	 * Replies to the requests.
 	 * Because not all requests expect a replay the result is optional.
 	 */
-	public Optional<Reply> process( Request request ){
+	public Optional<Reply> process( final Request request ){
 
 		final Optional<RequestHandler> handler = 
 				findResponsibleHandler(request);

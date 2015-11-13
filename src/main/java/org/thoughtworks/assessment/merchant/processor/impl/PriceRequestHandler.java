@@ -57,19 +57,13 @@ public final class PriceRequestHandler implements RequestHandler{
     @Override
     public Optional<Reply> process(final Request request) {
 
-        final Matcher matcher = IS_PRODUCT_DEFINITION_REQUEST.matcher(request.getValue());
-
-        final boolean matches = matcher.matches();
-
-        assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
-
-        final Pair<LocalNumber, ProductName> parsedRequest = parseRequest(request,matcher);
-        
-        final LocalNumber localNumber = parsedRequest.getFirstValue();
-        final ProductName productName = parsedRequest.getSecondValue();
-
         try{
+
+            final Pair<LocalNumber, ProductName> requestData = parseRequest(request);
             
+            final LocalNumber localNumber = requestData.getFirstValue();
+            final ProductName productName = requestData.getSecondValue();
+
             final RomanNumber romanNumber = 
                     localNumeralsRegistry.toRomanNumber(localNumber);
             
@@ -93,12 +87,17 @@ public final class PriceRequestHandler implements RequestHandler{
     @Override
     public boolean isResposibleFor(final Request request) {
 
-        return IS_PRODUCT_DEFINITION_REQUEST.matcher(request.getValue()).matches();
+        return REQUEST_PATTERN.matcher(request.getValue()).matches();
     }
 
 
-    private static Pair<LocalNumber, ProductName> parseRequest( 
-            final Request request, final Matcher matcher){
+    private static Pair<LocalNumber, ProductName> parseRequest(final Request request){
+
+        final Matcher matcher = REQUEST_PATTERN.matcher(request.getValue());
+
+        final boolean matches = matcher.matches();
+
+        assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
 
         final List<LocalNumberLiteral> literals = 
                 CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")),LocalNumberLiteral::of);
@@ -109,6 +108,6 @@ public final class PriceRequestHandler implements RequestHandler{
         return Pair.of(new LocalNumber(literals), productName);
     }
 
-    private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
+    private static final Pattern REQUEST_PATTERN = 
             Pattern.compile("how many Credits is ((\\w+ )+?)(\\w+) \\?");
 }

@@ -46,7 +46,7 @@ public final class ObjectUtils {
      */
     public static int hashCode( final Object o){ 
 
-        return o != null ? o.hashCode(): 1;
+        return o != null ? o.hashCode(): 0;
     }
     
     /**

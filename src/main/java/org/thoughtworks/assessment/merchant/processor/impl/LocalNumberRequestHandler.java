@@ -19,27 +19,25 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Roman
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
 /**
- * <p>LocalNumberRequestReviser class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The handle for the request defining the value of local number literals.
+ * For example: 'prok is V'. 
  */
 public final class LocalNumberRequestHandler implements RequestHandler{
 
-    private final LocalNumeralsRegistry localNumberLiteralsRegistry;
+    private final LocalNumeralsRegistry localNumeralsRegistry;
     private final RomanNumeralsConverter romanNumeralsConverter;
 
     /**
-     * <p>Constructor for LocalNumberRequestReviser.</p>
+     * Constructor.
      *
-     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
+     * @param localNumeralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
      * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
      */
     public LocalNumberRequestHandler(
-            final LocalNumeralsRegistry localNumberLiteralsRegistry, 
+            final LocalNumeralsRegistry localNumeralsRegistry, 
             final RomanNumeralsConverter romanNumeralsConverter) {
         
-        this.localNumberLiteralsRegistry = localNumberLiteralsRegistry;
+        this.localNumeralsRegistry = localNumeralsRegistry;
         this.romanNumeralsConverter = romanNumeralsConverter;
     }
 
@@ -47,18 +45,12 @@ public final class LocalNumberRequestHandler implements RequestHandler{
     @Override
     public Optional<Reply> process(final Request request) {
 
-        final Matcher matcher = HOW_MUCH_IS_REQUEST.matcher(request.getValue());
-
-        final boolean matches = matcher.matches();
-
-        assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
-
-        final LocalNumber localNumber = parseRequest(request,matcher);
-
         try{
+
+            final LocalNumber localNumber = parse(request);
             
             final RomanNumber romanNumber = 
-                    localNumberLiteralsRegistry.toRomanNumber(localNumber);
+                    localNumeralsRegistry.toRomanNumber(localNumber);
             
             final int result = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
@@ -71,11 +63,22 @@ public final class LocalNumberRequestHandler implements RequestHandler{
         }
     }
 
+    private LocalNumber parse(final Request request) {
+        
+        final Matcher matcher = REQUEST_PATTERN.matcher(request.getValue());
+
+        final boolean matches = matcher.matches();
+
+        assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
+
+        return parseRequest(request,matcher);
+    }
+
     /** {@inheritDoc} */
     @Override
     public boolean isResposibleFor(final Request request) {
 
-        return HOW_MUCH_IS_REQUEST.matcher(request.getValue()).matches();
+        return REQUEST_PATTERN.matcher(request.getValue()).matches();
     }
 
     private static LocalNumber parseRequest( 
@@ -87,8 +90,7 @@ public final class LocalNumberRequestHandler implements RequestHandler{
         return new LocalNumber(literals);
     }
 
-    private static final Pattern HOW_MUCH_IS_REQUEST = 
-            Pattern.compile("how much is ((\\w+ )+)\\?$");
-
+    private static final Pattern REQUEST_PATTERN = 
+            Pattern.compile("how much is ((\\w+ )+)\\?");
 
 }

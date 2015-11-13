@@ -1,10 +1,13 @@
 package org.thoughtworks.assessment.merchant.processor.impl;
 
+import java.util.Optional;
+
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
@@ -58,6 +61,21 @@ public final class LocalNumbeLiteralRequestReviserTest {
         EasyMock.replay(localNumberLiteralsRegistry);
         
         Assert.assertFalse(localNumbeLiteralRequestReviser.isResposibleFor(new Request("bock is not C")));
+    }
+
+    @Test
+    public void testWrongRomanLiteralProcess() {
+
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
+        
+        final LocalNumeralDefinitionRequestHandler localNumbeLiteralRequestReviser = 
+                new LocalNumeralDefinitionRequestHandler(localNumberLiteralsRegistry);
+        
+        
+        final Optional<Reply> actual = localNumbeLiteralRequestReviser.process(new Request("bock is A"));
+     
+        Assert.assertEquals(Optional.of(new Reply("literal 'A' is not valid roman number.")), actual);
     }
 
 }
