@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
-import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
+import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
 import org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.UnknownLiteral;
-import org.thoughtworks.assessment.merchant.processor.common.types.Replay;
+import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
@@ -21,8 +21,8 @@ public final class LocalNumberRequestReviserTest {
     @Test
     public void testProcess() throws Exception {
         
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
         
         final RomanNumber romanNumber = 
                 RomanNumber.valueOf("IV");
@@ -34,19 +34,19 @@ public final class LocalNumberRequestReviserTest {
         
         EasyMock.replay(localNumberLiteralsRegistry);
 
-        final LocalNumberRequestReviser localNumberRequestReviser = 
-                new LocalNumberRequestReviser(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create());
+        final LocalNumberRequestHandler localNumberRequestReviser = 
+                new LocalNumberRequestHandler(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create());
         
-        final Optional<Replay> actual = localNumberRequestReviser.process(new Request("how much is bock dock ?"));
+        final Optional<Reply> actual = localNumberRequestReviser.process(new Request("how much is bock dock ?"));
         
-        Assert.assertEquals(Optional.of(new Replay("bock dock is 4")), actual);
+        Assert.assertEquals(Optional.of(new Reply("bock dock is 4")), actual);
     }
 
     @Test
     public void testProcessInvalidNumber() throws Exception {
         
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
         
         final RomanNumber romanNumber = 
                 RomanNumber.valueOf("VV");
@@ -58,19 +58,19 @@ public final class LocalNumberRequestReviserTest {
         
         EasyMock.replay(localNumberLiteralsRegistry);
 
-        final LocalNumberRequestReviser localNumberRequestReviser = 
-                new LocalNumberRequestReviser(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create());
+        final LocalNumberRequestHandler localNumberRequestReviser = 
+                new LocalNumberRequestHandler(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create());
         
-        final Optional<Replay> actual = localNumberRequestReviser.process(new Request("how much is bock bock ?"));
+        final Optional<Reply> actual = localNumberRequestReviser.process(new Request("how much is bock bock ?"));
         
-        Assert.assertEquals(Optional.of(new Replay("wrong roman number: VV")), actual);
+        Assert.assertEquals(Optional.of(new Reply("wrong roman number: VV")), actual);
     }
 
     @Test
     public void testProcessUnknownLiteral() throws Exception {
         
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
         
         final LocalNumber localNumber = 
                 new LocalNumber(Arrays.asList(LocalNumberLiteral.of("bock"), LocalNumberLiteral.of("dockk")));
@@ -79,25 +79,25 @@ public final class LocalNumberRequestReviserTest {
         
         EasyMock.replay(localNumberLiteralsRegistry);
 
-        final LocalNumberRequestReviser localNumberRequestReviser = 
-                new LocalNumberRequestReviser(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create());
+        final LocalNumberRequestHandler localNumberRequestReviser = 
+                new LocalNumberRequestHandler(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create());
         
-        final Optional<Replay> actual = localNumberRequestReviser.process(new Request("how much is bock dockk ?"));
+        final Optional<Reply> actual = localNumberRequestReviser.process(new Request("how much is bock dockk ?"));
         
-        Assert.assertEquals(Optional.of(new Replay("unknown literal: dockk")), actual);
+        Assert.assertEquals(Optional.of(new Reply("unknown literal: dockk")), actual);
     }
 
     @Test
     public void testMatches() {
         
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
 
         final RomanNumeralsConverter romanNumeralsConverter = 
                 EasyMock.mock(RomanNumeralsConverter.class);
         
-        final LocalNumberRequestReviser localNumberRequestReviser = 
-                new LocalNumberRequestReviser(localNumberLiteralsRegistry, romanNumeralsConverter);
+        final LocalNumberRequestHandler localNumberRequestReviser = 
+                new LocalNumberRequestHandler(localNumberLiteralsRegistry, romanNumeralsConverter);
         
         Assert.assertTrue(localNumberRequestReviser.isResposibleFor(new Request("how much is bock dock ?")));
     }
@@ -105,14 +105,14 @@ public final class LocalNumberRequestReviserTest {
     @Test
     public void testDoesNotMatch() {
         
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
 
         final RomanNumeralsConverter romanNumeralsConverter = 
                 EasyMock.mock(RomanNumeralsConverter.class);
         
-        final LocalNumberRequestReviser localNumberRequestReviser = 
-                new LocalNumberRequestReviser(localNumberLiteralsRegistry, romanNumeralsConverter);
+        final LocalNumberRequestHandler localNumberRequestReviser = 
+                new LocalNumberRequestHandler(localNumberLiteralsRegistry, romanNumeralsConverter);
         
         Assert.assertFalse(localNumberRequestReviser.isResposibleFor(new Request("what is is bock dock ?")));
     }

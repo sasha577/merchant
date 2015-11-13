@@ -6,17 +6,12 @@ import org.thoughtworks.assessment.merchant.productcatalog.ProductCatalogImpl;
 import org.thoughtworks.assessment.merchant.romannumerals.factory.RomanNumeralsConverterFactory;
 
 /**
- * <p>MerchantFactory class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The Factory for the main business object of the program.
  */
 public final class MerchantFactory {
 
     /**
-     * <p>create.</p>
-     *
-     * @return a {@link org.thoughtworks.assessment.merchant.processor.Merchant} object.
+     * Creates a new Merchant object.
      */
     public static Merchant create() {
         

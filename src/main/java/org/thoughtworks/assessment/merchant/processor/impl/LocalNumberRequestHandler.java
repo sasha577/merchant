@@ -7,13 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
-import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
+import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
 import org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.UnknownLiteral;
-import org.thoughtworks.assessment.merchant.processor.common.types.Replay;
+import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
-import org.thoughtworks.assessment.merchant.processor.impl.base.RequestReviser;
+import org.thoughtworks.assessment.merchant.processor.impl.base.RequestHandler;
 import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
@@ -24,19 +24,19 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRo
  * @author arubinov
  * @version $Id: $Id
  */
-public final class LocalNumberRequestReviser implements RequestReviser{
+public final class LocalNumberRequestHandler implements RequestHandler{
 
-    private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
+    private final LocalNumeralsRegistry localNumberLiteralsRegistry;
     private final RomanNumeralsConverter romanNumeralsConverter;
 
     /**
      * <p>Constructor for LocalNumberRequestReviser.</p>
      *
-     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry} object.
+     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
      * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
      */
-    public LocalNumberRequestReviser(
-            final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
+    public LocalNumberRequestHandler(
+            final LocalNumeralsRegistry localNumberLiteralsRegistry, 
             final RomanNumeralsConverter romanNumeralsConverter) {
         
         this.localNumberLiteralsRegistry = localNumberLiteralsRegistry;
@@ -45,7 +45,7 @@ public final class LocalNumberRequestReviser implements RequestReviser{
 
     /** {@inheritDoc} */
     @Override
-    public Optional<Replay> process(final Request request) {
+    public Optional<Reply> process(final Request request) {
 
         final Matcher matcher = HOW_MUCH_IS_REQUEST.matcher(request.getValue());
 
@@ -62,11 +62,11 @@ public final class LocalNumberRequestReviser implements RequestReviser{
             
             final int result = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
-            return Optional.of(new Replay(String.format("%s is %d", localNumber.toLiteral(), result)));
+            return Optional.of(new Reply(String.format("%s is %d", localNumber.toLiteral(), result)));
             
         }catch(final UnknownLiteral|WrongRomanNumberException e){
             
-            return Optional.of(new Replay(e.getMessage()));
+            return Optional.of(new Reply(e.getMessage()));
             
         }
     }

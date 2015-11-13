@@ -9,17 +9,17 @@ import org.thoughtworks.assessment.merchant.common.types.base.SingleBasedValue;
  * @version $Id: $Id
  */
 @SuppressWarnings("serial")
-public final class Replay extends SingleBasedValue<String>{
+public final class Reply extends SingleBasedValue<String>{
 
     /** Constant <code>NONE</code> */
-    public static Replay NONE = new Replay("");
+    public static Reply NONE = new Reply("");
     
     /**
      * <p>Constructor for Replay.</p>
      *
      * @param value a {@link java.lang.String} object.
      */
-    public Replay(final String value) {
+    public Reply(final String value) {
         super(value);
     }
 

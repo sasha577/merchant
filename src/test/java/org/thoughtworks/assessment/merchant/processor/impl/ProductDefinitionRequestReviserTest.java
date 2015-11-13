@@ -7,10 +7,10 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.thoughtworks.assessment.merchant.common.types.Fraction;
-import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
+import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
-import org.thoughtworks.assessment.merchant.processor.common.types.Replay;
+import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 import org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog;
 import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.PriceInCredits;
@@ -23,8 +23,8 @@ public final class ProductDefinitionRequestReviserTest {
     @Test
     public void testProcess() throws Exception {
 
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
 
         final RomanNumber romanNumber = 
                 RomanNumber.valueOf("II");
@@ -42,10 +42,10 @@ public final class ProductDefinitionRequestReviserTest {
         EasyMock.replay(localNumberLiteralsRegistry);
         EasyMock.replay(productCatalog);
 
-        final ProductDefinitionRequestReviser priceRequestReviser = 
-                new ProductDefinitionRequestReviser(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create(), productCatalog );
+        final ProductDefinitionRequestHandler priceRequestReviser = 
+                new ProductDefinitionRequestHandler(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create(), productCatalog );
         
-        final Optional<Replay> actual = 
+        final Optional<Reply> actual = 
                 priceRequestReviser.process(new Request("pish pish Iron is 3910 Credits"));
         
         Assert.assertEquals(Optional.empty(), actual);

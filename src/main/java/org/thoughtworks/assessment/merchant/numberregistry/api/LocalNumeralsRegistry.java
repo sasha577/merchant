@@ -12,7 +12,7 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbo
  * @author arubinov
  * @version $Id: $Id
  */
-public interface LocalNumberLiteralsRegistry {
+public interface LocalNumeralsRegistry {
 
     /**
      * <p>registerLocalLiteral.</p>

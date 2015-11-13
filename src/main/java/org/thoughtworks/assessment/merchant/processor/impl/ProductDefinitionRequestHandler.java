@@ -9,53 +9,52 @@ import java.util.regex.Pattern;
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.common.types.Fraction;
 import org.thoughtworks.assessment.merchant.common.types.Pair;
-import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
+import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
 import org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.UnknownLiteral;
-import org.thoughtworks.assessment.merchant.processor.common.types.Replay;
+import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
-import org.thoughtworks.assessment.merchant.processor.impl.base.RequestReviser;
+import org.thoughtworks.assessment.merchant.processor.impl.base.RequestHandler;
 import org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog;
 import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.PriceInCredits;
 import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.ProductName;
-import org.thoughtworks.assessment.merchant.productcatalog.api.exceptions.NotDefinedProductException;
 import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
 /**
- * <p>PriceRequestReviser class.</p>
+ * <p>ProductDefinitionRequestReviser class.</p>
  *
  * @author arubinov
  * @version $Id: $Id
  */
-public final class PriceRequestReviser implements RequestReviser{
+public final class ProductDefinitionRequestHandler implements RequestHandler{
 
-    private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
+    private final LocalNumeralsRegistry localNumeralsRegistry;
     private final RomanNumeralsConverter romanNumeralsConverter;
     private final ProductCatalog productCatalog;
 
     /**
-     * <p>Constructor for PriceRequestReviser.</p>
+     * <p>Constructor for ProductDefinitionRequestReviser.</p>
      *
-     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry} object.
+     * @param localNumeralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
      * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
      * @param productCatalog a {@link org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog} object.
      */
-    public PriceRequestReviser(
-            final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
+    public ProductDefinitionRequestHandler(
+            final LocalNumeralsRegistry localNumeralsRegistry, 
             final RomanNumeralsConverter romanNumeralsConverter,
             final ProductCatalog productCatalog) {
         
-        this.localNumberLiteralsRegistry = localNumberLiteralsRegistry;
-        this.productCatalog = productCatalog;
+        this.localNumeralsRegistry = localNumeralsRegistry;
         this.romanNumeralsConverter = romanNumeralsConverter;
+        this.productCatalog = productCatalog;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Optional<Replay> process(final Request request) {
+    public Optional<Reply> process(final Request request) {
 
         final Matcher matcher = IS_PRODUCT_DEFINITION_REQUEST.matcher(request.getValue());
 
@@ -63,30 +62,29 @@ public final class PriceRequestReviser implements RequestReviser{
 
         assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
 
-        final Pair<LocalNumber, ProductName> parsedRequest = parseRequest(request,matcher);
+        final Pair<Pair<LocalNumber, ProductName>, Integer> parsedRequest = parseRequest(request,matcher);
         
-        final LocalNumber localNumber = parsedRequest.getFirstValue();
-        final ProductName productName = parsedRequest.getSecondValue();
+        final LocalNumber localNumber = parsedRequest.getFirstValue().getFirstValue();
+        final ProductName productName = parsedRequest.getFirstValue().getSecondValue();
+        
+        final int sumPrice = parsedRequest.getSecondValue();
 
         try{
             
             final RomanNumber romanNumber = 
-                    localNumberLiteralsRegistry.toRomanNumber(localNumber);
+                    localNumeralsRegistry.toRomanNumber(localNumber);
             
-            final int count = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
+            final int amount = romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
-            final PriceInCredits productPrice = productCatalog.getPrice(productName);
+            productCatalog.addOrReplaceProduct(productName, new PriceInCredits(Fraction.of(sumPrice,amount)));
             
-            final Fraction value = productPrice.getValue();
-            
-            final int result = value.multiply(Fraction.of(count)).toInteger();
-            
-            return Optional.of(new Replay(String.format("%s %s is %d Credits", localNumber.toLiteral(), productName.getValue(), result)));
+            return Optional.empty();
 
-        }catch(final UnknownLiteral|WrongRomanNumberException|NotDefinedProductException e){
+        }catch(final UnknownLiteral|WrongRomanNumberException e){
             
-            return Optional.of(new Replay(e.getMessage()));
+            return Optional.of(new Reply(e.getMessage()));
         }
+        
     }
 
     /** {@inheritDoc} */
@@ -97,7 +95,7 @@ public final class PriceRequestReviser implements RequestReviser{
     }
 
 
-    private static Pair<LocalNumber, ProductName> parseRequest( 
+    private static Pair<Pair<LocalNumber, ProductName>, Integer> parseRequest( 
             final Request request, final Matcher matcher){
 
         final List<LocalNumberLiteral> literals = 
@@ -106,9 +104,14 @@ public final class PriceRequestReviser implements RequestReviser{
         final ProductName productName = 
                 new ProductName(matcher.group(3));
 
-        return Pair.of(new LocalNumber(literals), productName);
+        final int price = 
+                Integer.valueOf(matcher.group(4));
+
+        return Pair.of(Pair.of(new LocalNumber(literals), productName), price);
     }
 
     private static final Pattern IS_PRODUCT_DEFINITION_REQUEST = 
-            Pattern.compile("how many Credits is ((\\w+ )+?)(\\w+) \\?");
+            Pattern.compile("((\\w+ )+?)(\\w+) is (\\d+) Credits");
+
+
 }

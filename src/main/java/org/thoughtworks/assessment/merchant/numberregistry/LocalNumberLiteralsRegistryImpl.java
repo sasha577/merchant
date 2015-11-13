@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
-import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
+import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
 import org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.UnknownLiteral;
@@ -18,7 +18,7 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbo
  * @author arubinov
  * @version $Id: $Id
  */
-public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteralsRegistry{
+public final class LocalNumberLiteralsRegistryImpl implements LocalNumeralsRegistry{
 
     private final Map<LocalNumberLiteral,RomanNumberLiteral>  romanByLocalLiteral;
 

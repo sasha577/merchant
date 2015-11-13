@@ -7,10 +7,10 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
 import org.thoughtworks.assessment.merchant.common.types.Fraction;
-import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry;
+import org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.LocalNumber;
 import org.thoughtworks.assessment.merchant.numberregistry.api.common.types.literal.LocalNumberLiteral;
-import org.thoughtworks.assessment.merchant.processor.common.types.Replay;
+import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 import org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog;
 import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.PriceInCredits;
@@ -24,8 +24,8 @@ public final class PriceRequestReviserTest {
     @Test
     public void testProcess() throws Exception {
 
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
 
         final RomanNumber romanNumber = 
                 RomanNumber.valueOf("IV");
@@ -43,20 +43,20 @@ public final class PriceRequestReviserTest {
         EasyMock.replay(localNumberLiteralsRegistry);
         EasyMock.replay(productCatalog);
 
-        final PriceRequestReviser priceRequestReviser = 
-                new PriceRequestReviser(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create(), productCatalog );
+        final PriceRequestHandler priceRequestReviser = 
+                new PriceRequestHandler(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create(), productCatalog );
         
-        final Optional<Replay> actual = 
+        final Optional<Reply> actual = 
                 priceRequestReviser.process(new Request("how many Credits is glob prok Silver ?"));
         
-        Assert.assertEquals(Optional.of(new Replay("glob prok Silver is 40 Credits")), actual);
+        Assert.assertEquals(Optional.of(new Reply("glob prok Silver is 40 Credits")), actual);
     }
 
     @Test
     public void testProcessUnknowProduct() throws Exception {
 
-        final LocalNumberLiteralsRegistry localNumberLiteralsRegistry = 
-                EasyMock.mock(LocalNumberLiteralsRegistry.class);
+        final LocalNumeralsRegistry localNumberLiteralsRegistry = 
+                EasyMock.mock(LocalNumeralsRegistry.class);
 
         final LocalNumber localNumber = 
                 new LocalNumber(Arrays.asList(LocalNumberLiteral.of("glob"), LocalNumberLiteral.of("prok")));
@@ -71,13 +71,13 @@ public final class PriceRequestReviserTest {
         EasyMock.replay(localNumberLiteralsRegistry);
         EasyMock.replay(productCatalog);
 
-        final PriceRequestReviser priceRequestReviser = 
-                new PriceRequestReviser(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create(), productCatalog );
+        final PriceRequestHandler priceRequestReviser = 
+                new PriceRequestHandler(localNumberLiteralsRegistry, RomanNumeralsConverterFactory.create(), productCatalog );
         
-        final Optional<Replay> actual = 
+        final Optional<Reply> actual = 
                 priceRequestReviser.process(new Request("how many Credits is glob prok Silver ?"));
         
-        Assert.assertEquals(Optional.of(new Replay("product Silver is not defined")), actual);
+        Assert.assertEquals(Optional.of(new Reply("product Silver is not defined")), actual);
     }
 
 }
