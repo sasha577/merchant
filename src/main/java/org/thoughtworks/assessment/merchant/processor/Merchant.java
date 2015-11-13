@@ -19,10 +19,23 @@ import org.thoughtworks.assessment.merchant.processor.impl.base.RequestReviser;
 import org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog;
 import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter;
 
+/**
+ * <p>Merchant class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class Merchant {
 
     private final Collection<RequestReviser> revisers;
     
+    /**
+     * <p>Constructor for Merchant.</p>
+     *
+     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry} object.
+     * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
+     * @param productCatalog a {@link org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog} object.
+     */
     public Merchant(
             final LocalNumberLiteralsRegistry localNumberLiteralsRegistry,
             final RomanNumeralsConverter romanNumeralsConverter,
@@ -32,6 +45,12 @@ public final class Merchant {
     }
     
     
+    /**
+     * <p>process.</p>
+     *
+     * @param in a {@link java.io.Reader} object.
+     * @param out a {@link java.io.Writer} object.
+     */
     public void process( final Reader in, final Writer out ){
         
         final BufferedReader bin = new BufferedReader(in);

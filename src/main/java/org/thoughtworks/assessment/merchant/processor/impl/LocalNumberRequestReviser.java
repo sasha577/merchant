@@ -18,11 +18,23 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConve
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
+/**
+ * <p>LocalNumberRequestReviser class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class LocalNumberRequestReviser implements RequestReviser{
 
     private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
     private final RomanNumeralsConverter romanNumeralsConverter;
 
+    /**
+     * <p>Constructor for LocalNumberRequestReviser.</p>
+     *
+     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry} object.
+     * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
+     */
     public LocalNumberRequestReviser(
             final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
             final RomanNumeralsConverter romanNumeralsConverter) {
@@ -31,6 +43,7 @@ public final class LocalNumberRequestReviser implements RequestReviser{
         this.romanNumeralsConverter = romanNumeralsConverter;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Optional<Replay> process(final Request request) {
 
@@ -58,6 +71,7 @@ public final class LocalNumberRequestReviser implements RequestReviser{
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isResposibleFor(final Request request) {
 

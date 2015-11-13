@@ -12,10 +12,19 @@ import org.thoughtworks.assessment.merchant.numberregistry.api.exceptions.Unknow
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
+/**
+ * <p>LocalNumberLiteralsRegistryImpl class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteralsRegistry{
 
     private final Map<LocalNumberLiteral,RomanNumberLiteral>  romanByLocalLiteral;
 
+    /**
+     * <p>Constructor for LocalNumberLiteralsRegistryImpl.</p>
+     */
     public LocalNumberLiteralsRegistryImpl() {
 
         this.romanByLocalLiteral = new HashMap<LocalNumberLiteral, RomanNumberLiteral>();
@@ -24,6 +33,7 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteral
     /* (non-Javadoc)
      * @see org.thoughtworks.assessment.merchant.numberregistry.LocalNumberLiteralsRegistry#registerLocalLiteral(org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumberLiteral, org.thoughtworks.assessment.merchant.romannumerals.api.types.symbols.RomanNumberLiteral)
      */
+    /** {@inheritDoc} */
     @Override
     public void registerLocalLiteral(final LocalNumberLiteral localLiteral, final RomanNumberLiteral romanLiteral){
 
@@ -33,6 +43,7 @@ public final class LocalNumberLiteralsRegistryImpl implements LocalNumberLiteral
     /* (non-Javadoc)
      * @see org.thoughtworks.assessment.merchant.numberregistry.LocalNumberLiteralsRegistry#toRomanNumber(org.thoughtworks.assessment.merchant.numberregistry.types.LocalNumber)
      */
+    /** {@inheritDoc} */
     @Override
     public RomanNumber toRomanNumber(final LocalNumber localNumber) throws UnknownLiteral{
 

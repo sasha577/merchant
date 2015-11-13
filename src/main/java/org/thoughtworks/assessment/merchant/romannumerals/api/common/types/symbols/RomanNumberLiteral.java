@@ -9,9 +9,11 @@ import java.util.Optional;
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 
 /**
- * 
+ *
  * Symbols used in Roman numbers.
  *
+ * @author arubinov
+ * @version $Id: $Id
  */
 public enum RomanNumberLiteral{
     I(1),
@@ -28,20 +30,38 @@ public enum RomanNumberLiteral{
         this.value = value;
     }
     
+    /**
+     * <p>Getter for the field <code>value</code>.</p>
+     *
+     * @return a int.
+     */
     public int getValue(){
         return value;
     }
     
+    /**
+     * <p>isHigherThen.</p>
+     *
+     * @param other a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
+     * @return a boolean.
+     */
     public boolean isHigherThen( final RomanNumberLiteral other){
         return this.value > other.value;
     }
 
+    /**
+     * <p>isHigherOrEqualThen.</p>
+     *
+     * @param other a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
+     * @return a boolean.
+     */
     public boolean isHigherOrEqualThen( final RomanNumberLiteral other){
         return this.value >= other.value;
     }
 
     /**
      * gets all literals that have lower value than this one.
+     *
      * @return all literals that have lower value than this one.
      */
     public Collection<RomanNumberLiteral> getLowerValues(){
@@ -53,6 +73,7 @@ public enum RomanNumberLiteral{
     
     /**
      * search enum item by the char.
+     *
      * @param c char to search
      * @return enum item
      * @throws NoSuchElementException if not found

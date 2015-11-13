@@ -12,14 +12,26 @@ import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 import org.thoughtworks.assessment.merchant.processor.impl.base.RequestReviser;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
+/**
+ * <p>LocalNumbeLiteralRequestReviser class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class LocalNumbeLiteralRequestReviser implements RequestReviser{
 
     private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
 
+    /**
+     * <p>Constructor for LocalNumbeLiteralRequestReviser.</p>
+     *
+     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry} object.
+     */
     public LocalNumbeLiteralRequestReviser(final LocalNumberLiteralsRegistry localNumberLiteralsRegistry) {
         this.localNumberLiteralsRegistry = localNumberLiteralsRegistry;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Optional<Replay> process(final Request request) {
 
@@ -46,6 +58,7 @@ public final class LocalNumbeLiteralRequestReviser implements RequestReviser{
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isResposibleFor(final Request request) {
 

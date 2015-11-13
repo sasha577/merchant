@@ -23,12 +23,25 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConve
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
+/**
+ * <p>ProductDefinitionRequestReviser class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class ProductDefinitionRequestReviser implements RequestReviser{
 
     private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
     private final ProductCatalog productCatalog;
     private final RomanNumeralsConverter romanNumeralsConverter;
 
+    /**
+     * <p>Constructor for ProductDefinitionRequestReviser.</p>
+     *
+     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry} object.
+     * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
+     * @param productCatalog a {@link org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog} object.
+     */
     public ProductDefinitionRequestReviser(
             final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
             final RomanNumeralsConverter romanNumeralsConverter,
@@ -39,6 +52,7 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
         this.romanNumeralsConverter = romanNumeralsConverter;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Optional<Replay> process(final Request request) {
 
@@ -73,6 +87,7 @@ public final class ProductDefinitionRequestReviser implements RequestReviser{
         
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isResposibleFor(final Request request) {
 

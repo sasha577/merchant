@@ -24,12 +24,25 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConve
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
+/**
+ * <p>PriceRequestReviser class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class PriceRequestReviser implements RequestReviser{
 
     private final LocalNumberLiteralsRegistry localNumberLiteralsRegistry;
     private final RomanNumeralsConverter romanNumeralsConverter;
     private final ProductCatalog productCatalog;
 
+    /**
+     * <p>Constructor for PriceRequestReviser.</p>
+     *
+     * @param localNumberLiteralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumberLiteralsRegistry} object.
+     * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
+     * @param productCatalog a {@link org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog} object.
+     */
     public PriceRequestReviser(
             final LocalNumberLiteralsRegistry localNumberLiteralsRegistry, 
             final RomanNumeralsConverter romanNumeralsConverter,
@@ -40,6 +53,7 @@ public final class PriceRequestReviser implements RequestReviser{
         this.romanNumeralsConverter = romanNumeralsConverter;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Optional<Replay> process(final Request request) {
 
@@ -75,6 +89,7 @@ public final class PriceRequestReviser implements RequestReviser{
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isResposibleFor(final Request request) {
 

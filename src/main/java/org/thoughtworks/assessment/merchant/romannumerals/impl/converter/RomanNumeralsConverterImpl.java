@@ -11,14 +11,26 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbo
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
 
+/**
+ * <p>RomanNumeralsConverterImpl class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class RomanNumeralsConverterImpl implements RomanNumeralsConverter{
     
     private final List<State> stateGraph;
     
+    /**
+     * <p>Constructor for RomanNumeralsConverterImpl.</p>
+     *
+     * @param stateGraph a {@link java.util.List} object.
+     */
     public RomanNumeralsConverterImpl(final List<State> stateGraph) {
         this.stateGraph = stateGraph;
     }
 
+    /** {@inheritDoc} */
     @Override
     public ArabicNumber toArabicNumber(final RomanNumber number) throws WrongRomanNumberException{
         

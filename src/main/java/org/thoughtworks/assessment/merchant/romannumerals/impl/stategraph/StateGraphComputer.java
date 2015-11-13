@@ -23,11 +23,20 @@ import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.S
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.MetaStateFactory;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.statefactory.StateFactory;
 
+/**
+ * <p>StateGraphComputer class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class StateGraphComputer {
 
     private final Map<RomanNumberLiteral,StateFactory> factoryBySymbol;
     private final List<StateFactory> factories;
     
+    /**
+     * <p>Constructor for StateGraphComputer.</p>
+     */
     public StateGraphComputer() {
         
         this.factories = 
@@ -38,6 +47,11 @@ public final class StateGraphComputer {
         
     }
     
+    /**
+     * <p>create.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<State> create(){
         
         return CollectionUtils.map( factories, f -> f.apply(Optional.empty()));

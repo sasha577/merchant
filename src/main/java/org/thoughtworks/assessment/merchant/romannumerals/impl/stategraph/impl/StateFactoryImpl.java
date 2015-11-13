@@ -13,6 +13,12 @@ import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.Stat
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.MetaStateFactory;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.statefactory.StateFactory;
 
+/**
+ * <p>StateFactoryImpl class.</p>
+ *
+ * @author arubinov
+ * @version $Id: $Id
+ */
 public final class StateFactoryImpl implements StateFactory{
 
     private final RomanNumberLiteral literal;
@@ -21,6 +27,14 @@ public final class StateFactoryImpl implements StateFactory{
 
     private final MetaStateFactory metaFactory;
 
+    /**
+     * <p>Constructor for StateFactoryImpl.</p>
+     *
+     * @param symbol a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
+     * @param maxCount a int.
+     * @param minuends a {@link java.util.Collection} object.
+     * @param metaFactory a {@link org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.MetaStateFactory} object.
+     */
     public StateFactoryImpl(
             final RomanNumberLiteral symbol, 
             final int maxCount, 
@@ -33,11 +47,13 @@ public final class StateFactoryImpl implements StateFactory{
         this.metaFactory = metaFactory;
     }
 
+    /** {@inheritDoc} */
     @Override
     public RomanNumberLiteral getSymbol(){
         return literal;
     }
 
+    /** {@inheritDoc} */
     @Override
     public State apply(final Optional<RomanNumberLiteral> predecessor) {
         
