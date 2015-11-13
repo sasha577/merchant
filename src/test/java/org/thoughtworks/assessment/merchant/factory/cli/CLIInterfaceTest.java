@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.processor;
+package org.thoughtworks.assessment.merchant.factory.cli;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
@@ -9,11 +9,9 @@ import java.io.Writer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.thoughtworks.assessment.merchant.common.test.utils.IOUtils;
-import org.thoughtworks.assessment.merchant.factory.cli.CLIInterface;
 import org.thoughtworks.assessment.merchant.factory.cli.data.TestResources;
 
-
-public final class MerchantTest {
+public final class CLIInterfaceTest {
 
     @Test
     public void testProcess() throws Exception {
@@ -28,4 +26,5 @@ public final class MerchantTest {
         
         Assert.assertEquals(IOUtils.toString(TestResources.EXPECTED_OUTPUT.getResource()), actual.toString());
     }
+
 }

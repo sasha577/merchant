@@ -1,13 +1,17 @@
 package org.thoughtworks.assessment.merchant.factory.cli;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Optional;
 
 import org.thoughtworks.assessment.merchant.factory.common.MerchantFactory;
 import org.thoughtworks.assessment.merchant.processor.Merchant;
+import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
+import org.thoughtworks.assessment.merchant.processor.common.types.Request;
 
 /**
  * Provides the user interface to the program over the command line interface (CLI).
@@ -16,23 +20,68 @@ import org.thoughtworks.assessment.merchant.processor.Merchant;
  */
 public final class CLIInterface {
 
-    /**
-     * Entry point for the process.
-     */
-    public static void main(final String[] args) {
+	/**
+	 * Entry point for the process.
+	 */
+	public static void main(final String[] args) {
 
-        final Merchant merchant = MerchantFactory.create();
+		try(
+				final Reader in = new InputStreamReader(System.in);
+				final Writer out = new OutputStreamWriter(System.out) ){
 
-        try(
-            final Reader in = new InputStreamReader(System.in);
-            final Writer out = new OutputStreamWriter(System.out) ){
+			process(in, out);
 
-            merchant.process(in, out);
-            
-        }
-        catch(final IOException e){
-            throw new RuntimeException("unexpected problem during IO operation", e);
-        }
 
-    }
+		}
+		catch(final IOException e){
+			throw new RuntimeException("unexpected problem during IO operation", e);
+		}
+
+	}
+
+
+	public static void process(final Reader in, final Writer out) {
+
+		final BufferedReader bin = new BufferedReader(in);
+
+		final Merchant merchant = MerchantFactory.create();
+
+		Optional<Request> request;
+
+		while( (request=readNextRequest(bin)).isPresent() ){
+
+			Optional<Reply> reply = merchant.process(request.get());
+			writeReplay(reply, out);
+		}
+	}
+
+
+	/**
+	 * Read out the next request from the input stream.
+	 * Returns empty if there in no more data.
+	 */
+	private static Optional<Request> readNextRequest(final BufferedReader in){
+		try {
+
+			final String line = in.readLine();
+			return line != null ? Optional.of(new Request(line)) : Optional.empty();
+
+		} catch (final IOException e) {
+			throw new RuntimeException("unable to read from input.", e);
+		}
+	}
+
+	/**
+	 * Writes the reply to the output stream. 
+	 */
+	private static void writeReplay(final Optional<Reply> reply, final Writer out){
+		if(reply.isPresent()) try {
+			out.write(reply.get().getValue());
+			out.write('\n');
+			out.flush();
+		} catch (final IOException e) {
+			throw new RuntimeException("unable to write out respose.", e);
+		}
+	}
+
 }

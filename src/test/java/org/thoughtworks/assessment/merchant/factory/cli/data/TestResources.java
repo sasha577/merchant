@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.processor.data;
+package org.thoughtworks.assessment.merchant.factory.cli.data;
 
 import org.thoughtworks.assessment.merchant.common.test.utils.ResourceLoader;
 
