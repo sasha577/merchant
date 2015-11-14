@@ -3,18 +3,15 @@ package org.thoughtworks.assessment.merchant.productcatalog.api.exceptions;
 import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.ProductName;
 
 /**
- * <p>NotDefinedProductException class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Indicates that the product is not known.
  */
 @SuppressWarnings("serial")
 public final class NotDefinedProductException extends Exception{
     
     /**
-     * <p>Constructor for NotDefinedProductException.</p>
+     * Constructor.
      *
-     * @param productName a {@link org.thoughtworks.assessment.merchant.productcatalog.api.common.types.ProductName} object.
+     * @param productName the product name caused the exception. 
      */
     public NotDefinedProductException(final ProductName productName){
         super(String.format("product %s is not defined", productName.getValue()));

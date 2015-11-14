@@ -5,27 +5,27 @@ import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.Prod
 import org.thoughtworks.assessment.merchant.productcatalog.api.exceptions.NotDefinedProductException;
 
 /**
- * <p>ProductCatalog interface.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The product catalog.
+ * Let registry the products and get information about they prices.
  */
 public interface ProductCatalog {
 
     /**
-     * <p>addOrReplaceProduct.</p>
+     * Registers a product.
+     * 
+     * When registered more times, the last registration overrides the previous one. 
      *
-     * @param product a {@link org.thoughtworks.assessment.merchant.productcatalog.api.common.types.ProductName} object.
-     * @param price a {@link org.thoughtworks.assessment.merchant.productcatalog.api.common.types.PriceInCredits} object.
+     * @param product a product to register.
+     * @param price a price of the given product.
      */
-    public void addOrReplaceProduct(final ProductName product, final PriceInCredits price);
+    public void registry(final ProductName product, final PriceInCredits price);
     
     /**
-     * <p>getPrice.</p>
+     * Gets price of the product.
      *
-     * @param product a {@link org.thoughtworks.assessment.merchant.productcatalog.api.common.types.ProductName} object.
-     * @return a {@link org.thoughtworks.assessment.merchant.productcatalog.api.common.types.PriceInCredits} object.
-     * @throws org.thoughtworks.assessment.merchant.productcatalog.api.exceptions.NotDefinedProductException if any.
+     * @param product a product in question.
+     * @return a price of the product.
+     * @throws NotDefinedProductException if product has not been registered before.
      */
     public PriceInCredits getPrice(final ProductName product) throws NotDefinedProductException;
 

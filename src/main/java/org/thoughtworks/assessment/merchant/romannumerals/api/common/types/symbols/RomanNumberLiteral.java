@@ -9,11 +9,7 @@ import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanLiteral;
 
 /**
- *
- * Symbols used in Roman numbers.
- *
- * @author arubinov
- * @version $Id: $Id
+ * Symbols used in Roman numerals.
  */
 public enum RomanNumberLiteral{
     I(1),
@@ -24,6 +20,9 @@ public enum RomanNumberLiteral{
     D(500),
     M(1000);
     
+    /**
+     * the value of this literal.
+     */
     private final int value;
     
     private RomanNumberLiteral(final int value) {
@@ -31,29 +30,21 @@ public enum RomanNumberLiteral{
     }
     
     /**
-     * <p>Getter for the field <code>value</code>.</p>
-     *
-     * @return a int.
+     * Gets the value of this literal
      */
     public int getValue(){
         return value;
     }
     
     /**
-     * <p>isHigherThen.</p>
-     *
-     * @param other a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
-     * @return a boolean.
+     * Says whether the value of this literal is higher than of one other. 
      */
     public boolean isHigherThen( final RomanNumberLiteral other){
         return this.value > other.value;
     }
 
     /**
-     * <p>isHigherOrEqualThen.</p>
-     *
-     * @param other a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
-     * @return a boolean.
+     * Says whether the value of this literal is higher or equal than of one other. 
      */
     public boolean isHigherOrEqualThen( final RomanNumberLiteral other){
         return this.value >= other.value;

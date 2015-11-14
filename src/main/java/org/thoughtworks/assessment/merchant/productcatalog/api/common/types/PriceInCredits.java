@@ -4,18 +4,15 @@ import org.thoughtworks.assessment.merchant.common.types.Fraction;
 import org.thoughtworks.assessment.merchant.common.types.base.SingleBasedValue;
 
 /**
- * <p>PriceInCredits class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Price in Credits of one item of certain product.
+ * Because the price can be prompted as a sum for several items,
+ * fraction is used to keep the value.  
  */
 @SuppressWarnings("serial")
 public final class PriceInCredits extends SingleBasedValue<Fraction>{
 
     /**
-     * <p>Constructor for PriceInCredits.</p>
-     *
-     * @param value a {@link org.thoughtworks.assessment.merchant.common.types.Fraction} object.
+     * Constructor.
      */
     public PriceInCredits(final Fraction value) {
         super(value);

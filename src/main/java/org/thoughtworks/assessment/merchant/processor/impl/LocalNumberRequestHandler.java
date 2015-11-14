@@ -19,8 +19,8 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Roman
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
 /**
- * The handle for the request defining the value of local number literals.
- * For example: 'prok is V'. 
+ * The handle for the requests asking for the value of the local number.
+ * For example: 'how much is bock dock ?'. 
  */
 public final class LocalNumberRequestHandler implements RequestHandler{
 
@@ -30,8 +30,8 @@ public final class LocalNumberRequestHandler implements RequestHandler{
     /**
      * Constructor.
      *
-     * @param localNumeralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
-     * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
+     * @param localNumeralsRegistry a registry for local numerals.
+     * @param romanNumeralsConverter a converter from Roman to Arabic numerals.
      */
     public LocalNumberRequestHandler(
             final LocalNumeralsRegistry localNumeralsRegistry, 
@@ -39,6 +39,13 @@ public final class LocalNumberRequestHandler implements RequestHandler{
         
         this.localNumeralsRegistry = localNumeralsRegistry;
         this.romanNumeralsConverter = romanNumeralsConverter;
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public boolean isResposibleFor(final Request request) {
+
+        return REQUEST_PATTERN.matcher(request.getValue()).matches();
     }
 
     /** {@inheritDoc} */
@@ -63,26 +70,16 @@ public final class LocalNumberRequestHandler implements RequestHandler{
         }
     }
 
-    private LocalNumber parse(final Request request) {
+    /**
+     * Extracts the variable part from the request.
+     */
+    private static LocalNumber parse(final Request request) {
         
         final Matcher matcher = REQUEST_PATTERN.matcher(request.getValue());
 
         final boolean matches = matcher.matches();
 
         assert matches: "programmer error: matching must have been checked in isResposibleFor before!";
-
-        return parseRequest(request,matcher);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isResposibleFor(final Request request) {
-
-        return REQUEST_PATTERN.matcher(request.getValue()).matches();
-    }
-
-    private static LocalNumber parseRequest( 
-            final Request request, final Matcher matcher){
 
         final List<LocalNumberLiteral> literals = 
                 CollectionUtils.map(Arrays.asList(matcher.group(1).split("\\s+")), LocalNumberLiteral::of);

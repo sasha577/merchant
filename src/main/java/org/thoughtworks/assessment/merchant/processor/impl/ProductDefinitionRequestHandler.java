@@ -24,10 +24,8 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Roman
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
 /**
- * <p>ProductDefinitionRequestReviser class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The handle for the request defining the price of the certain product.
+ * For example: 'pish pish Iron is 3910 Credits'. 
  */
 public final class ProductDefinitionRequestHandler implements RequestHandler{
 
@@ -36,11 +34,11 @@ public final class ProductDefinitionRequestHandler implements RequestHandler{
     private final ProductCatalog productCatalog;
 
     /**
-     * <p>Constructor for ProductDefinitionRequestReviser.</p>
+     * Constructor.
      *
-     * @param localNumeralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
-     * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
-     * @param productCatalog a {@link org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog} object.
+     * @param localNumeralsRegistry a registry for local numerals.
+     * @param romanNumeralsConverter a converter from Roman to Arabic numerals.
+     * @param productCatalog a product catalog.
      */
     public ProductDefinitionRequestHandler(
             final LocalNumeralsRegistry localNumeralsRegistry, 
@@ -54,15 +52,22 @@ public final class ProductDefinitionRequestHandler implements RequestHandler{
 
     /** {@inheritDoc} */
     @Override
+    public boolean isResposibleFor(final Request request) {
+
+        return REQUEST_PATTERN.matcher(request.getValue()).matches();
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Optional<Reply> process(final Request request) {
 
         try{
 
-            final Pair<Pair<LocalNumber, ProductName>, Integer> parsedRequest = parseRequest(request);
+            final Pair<Pair<LocalNumber, ProductName>, Integer> requestData = parse(request);
             
-            final LocalNumber localNumber = parsedRequest.getFirstValue().getFirstValue();
-            final ProductName productName = parsedRequest.getFirstValue().getSecondValue();
-            final int sumPrice = parsedRequest.getSecondValue();
+            final LocalNumber localNumber = requestData.getFirstValue().getFirstValue();
+            final ProductName productName = requestData.getFirstValue().getSecondValue();
+            final int sumPrice = requestData.getSecondValue();
 
             final RomanNumber romanNumber = 
                     localNumeralsRegistry.toRomanNumber(localNumber);
@@ -71,7 +76,7 @@ public final class ProductDefinitionRequestHandler implements RequestHandler{
             final int amount = 
                     romanNumeralsConverter.toArabicNumber(romanNumber).getValue();
             
-            productCatalog.addOrReplaceProduct(productName, new PriceInCredits(Fraction.of(sumPrice,amount)));
+            productCatalog.registry(productName, new PriceInCredits(Fraction.of(sumPrice,amount)));
             
             return Optional.empty();
 
@@ -82,15 +87,10 @@ public final class ProductDefinitionRequestHandler implements RequestHandler{
         
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean isResposibleFor(final Request request) {
-
-        return REQUEST_PATTERN.matcher(request.getValue()).matches();
-    }
-
-
-    private static Pair<Pair<LocalNumber, ProductName>, Integer> parseRequest(final Request request){
+    /**
+     * Extracts the variable part from the request.
+     */
+    private static Pair<Pair<LocalNumber, ProductName>, Integer> parse(final Request request){
 
         final Matcher matcher = REQUEST_PATTERN.matcher(request.getValue());
 

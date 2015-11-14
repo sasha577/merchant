@@ -25,23 +25,21 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Roman
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
 /**
- * <p>PriceRequestReviser class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The handle for the request asking for price of the certain product.
+ * For example: 'how many Credits is glob prok Silver ?'. 
  */
-public final class PriceRequestHandler implements RequestHandler{
+ public final class PriceRequestHandler implements RequestHandler{
 
     private final LocalNumeralsRegistry localNumeralsRegistry;
     private final RomanNumeralsConverter romanNumeralsConverter;
     private final ProductCatalog productCatalog;
 
     /**
-     * <p>Constructor for PriceRequestReviser.</p>
+     * Constructor.
      *
-     * @param localNumeralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
-     * @param romanNumeralsConverter a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
-     * @param productCatalog a {@link org.thoughtworks.assessment.merchant.productcatalog.api.ProductCatalog} object.
+     * @param localNumeralsRegistry a registry for local numerals.
+     * @param romanNumeralsConverter a converter from Roman to Arabic numerals.
+     * @param productCatalog a product catalog.
      */
     public PriceRequestHandler(
             final LocalNumeralsRegistry localNumeralsRegistry, 
@@ -55,11 +53,19 @@ public final class PriceRequestHandler implements RequestHandler{
 
     /** {@inheritDoc} */
     @Override
+    public boolean isResposibleFor(final Request request) {
+
+        return REQUEST_PATTERN.matcher(request.getValue()).matches();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
     public Optional<Reply> process(final Request request) {
 
         try{
 
-            final Pair<LocalNumber, ProductName> requestData = parseRequest(request);
+            final Pair<LocalNumber, ProductName> requestData = parse(request);
             
             final LocalNumber localNumber = requestData.getFirstValue();
             final ProductName productName = requestData.getSecondValue();
@@ -83,15 +89,10 @@ public final class PriceRequestHandler implements RequestHandler{
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean isResposibleFor(final Request request) {
-
-        return REQUEST_PATTERN.matcher(request.getValue()).matches();
-    }
-
-
-    private static Pair<LocalNumber, ProductName> parseRequest(final Request request){
+    /**
+     * Extracts the variable part from the request.
+     */
+    private static Pair<LocalNumber, ProductName> parse(final Request request){
 
         final Matcher matcher = REQUEST_PATTERN.matcher(request.getValue());
 

@@ -14,23 +14,30 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbo
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanLiteral;
 
 /**
- * <p>LocalNumbeLiteralRequestReviser class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The handle for the requests defining the value of local number literals.
+ * For example: 'prok is V'. 
  */
 public final class LocalNumeralDefinitionRequestHandler implements RequestHandler{
 
     private final LocalNumeralsRegistry localNumeralsRegistry;
 
     /**
-     * <p>Constructor for LocalNumbeLiteralRequestReviser.</p>
+     * Constructor.
      *
-     * @param localNumeralsRegistry a {@link org.thoughtworks.assessment.merchant.numberregistry.api.LocalNumeralsRegistry} object.
+     * @param localNumeralsRegistry a registry for local numerals.
      */
     public LocalNumeralDefinitionRequestHandler(final LocalNumeralsRegistry localNumeralsRegistry) {
         this.localNumeralsRegistry = localNumeralsRegistry;
     }
+
+    
+    /** {@inheritDoc} */
+    @Override
+    public boolean isResposibleFor(final Request request) {
+
+        return REQUEST_PATTERN.matcher(request.getValue()).matches();
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -50,7 +57,10 @@ public final class LocalNumeralDefinitionRequestHandler implements RequestHandle
         }
     }
 
-    private Pair<LocalNumberLiteral, RomanNumberLiteral> parse(final Request request) {
+    /**
+     * Extracts the variable part from the request.
+     */
+    private static Pair<LocalNumberLiteral, RomanNumberLiteral> parse(final Request request) {
         
         final Matcher matcher = REQUEST_PATTERN.matcher(request.getValue());
 
@@ -62,13 +72,6 @@ public final class LocalNumeralDefinitionRequestHandler implements RequestHandle
         final RomanNumberLiteral romanLiteral = RomanNumberLiteral.of(matcher.group(2).charAt(0));
 
         return Pair.of(localLiteral, romanLiteral);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isResposibleFor(final Request request) {
-
-        return REQUEST_PATTERN.matcher(request.getValue()).matches();
     }
 
     private static final Pattern REQUEST_PATTERN = Pattern.compile("(\\w+) is (\\w)$");

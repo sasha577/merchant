@@ -14,7 +14,7 @@ public final class ProductCatalogImplTest {
         
         final ProductCatalogImpl productCatalog = new ProductCatalogImpl();
         
-        productCatalog.addOrReplaceProduct(new ProductName("pn"), new PriceInCredits(Fraction.of(1, 2)));
+        productCatalog.registry(new ProductName("pn"), new PriceInCredits(Fraction.of(1, 2)));
         
         final PriceInCredits actual = productCatalog.getPrice(new ProductName("pn"));
         
@@ -26,7 +26,7 @@ public final class ProductCatalogImplTest {
         
         final ProductCatalogImpl productCatalog = new ProductCatalogImpl();
         
-        productCatalog.addOrReplaceProduct(new ProductName("pn"), new PriceInCredits(Fraction.of(1, 2)));
+        productCatalog.registry(new ProductName("pn"), new PriceInCredits(Fraction.of(1, 2)));
         
         productCatalog.getPrice(new ProductName("pn1"));
         

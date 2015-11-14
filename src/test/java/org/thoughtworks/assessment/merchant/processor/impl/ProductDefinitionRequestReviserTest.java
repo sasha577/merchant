@@ -37,7 +37,7 @@ public final class ProductDefinitionRequestReviserTest {
         
         final ProductCatalog productCatalog = EasyMock.mock(ProductCatalog.class);;
 
-        productCatalog.addOrReplaceProduct(new ProductName("Iron"),new PriceInCredits(Fraction.of(3910,2)));
+        productCatalog.registry(new ProductName("Iron"),new PriceInCredits(Fraction.of(3910,2)));
         
         EasyMock.replay(localNumberLiteralsRegistry);
         EasyMock.replay(productCatalog);

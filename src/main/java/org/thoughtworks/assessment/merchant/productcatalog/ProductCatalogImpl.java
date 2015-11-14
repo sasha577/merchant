@@ -9,10 +9,8 @@ import org.thoughtworks.assessment.merchant.productcatalog.api.common.types.Prod
 import org.thoughtworks.assessment.merchant.productcatalog.api.exceptions.NotDefinedProductException;
 
 /**
- * <p>ProductCatalogImpl class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The product catalog.
+ * Let registry the products and get information about they prices.
  */
 public final class ProductCatalogImpl implements ProductCatalog{
 
@@ -28,7 +26,7 @@ public final class ProductCatalogImpl implements ProductCatalog{
     
     /** {@inheritDoc} */
     @Override
-    public void addOrReplaceProduct(final ProductName product, final PriceInCredits price){
+    public void registry(final ProductName product, final PriceInCredits price){
         priceByName.put(product, price);
     }
     
@@ -45,6 +43,9 @@ public final class ProductCatalogImpl implements ProductCatalog{
         return priceInCredits;
     }
 
+    /**
+     * throws an exception if product was not found
+     */
     private static void assertProductDefined(final boolean found, final ProductName productName) throws NotDefinedProductException{
         if(!found){
             throw new NotDefinedProductException(productName);
