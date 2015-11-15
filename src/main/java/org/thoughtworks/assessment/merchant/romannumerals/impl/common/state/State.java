@@ -8,63 +8,65 @@ import org.thoughtworks.assessment.merchant.common.types.base.PairBasedValue;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 
 /**
- * <p>State class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * The state node in the state graph of the parser.
+ * 
+ * The state has particular a value and the list of the possible states can follow it.
+ * 
+ * The value of the whole Roman number is a sum of all states.
+ * 
+ * The value of the state depends of the value of the Roman literal this state presents, 
+ * but also of the value of the predecessors literal. 
+ * Should the value of the predecessor be smaller then this one, the predecessor is considered as subtracter
+ * and its value will be compensated.
+ * 
  */
 @SuppressWarnings("serial")
 public final class State extends PairBasedValue<Pair<RomanNumberLiteral,Integer>, Collection<State>>{
 
     /**
-     * <p>Constructor for State.</p>
+     * Constructor.
      *
-     * @param literal a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
-     * @param successors a {@link java.util.Collection} object.
-     * @param predecessor a {@link java.util.Optional} object.
+     * @param literal a Roman literal this state represents.
+     * @param successors a list of allowed succeeding literals.
+     * @param predecessor a Roman literal is preceding this one in the state graph.
      */
     public State(final RomanNumberLiteral literal, final Collection<State> successors, final Optional<RomanNumberLiteral> predecessor) {
-        super(Pair.of(literal,calculateSubstractionCompensation(literal,predecessor)), successors);
+        super(Pair.of(literal,calculateValue(literal,predecessor)), successors);
     }
 
     /**
-     * <p>getLiteral.</p>
-     *
-     * @return a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
      */
     public RomanNumberLiteral getLiteral() {
         return super.getFirst().getFirstValue();
     }
     
     /**
-     * <p>getSuccessors.</p>
-     *
-     * @return a {@link java.util.Collection} object.
+     * Gets the list of the states or literals that allowed to succeed this one. 
      */
     public Collection<State> getSuccessors() {
         return super.getSecond();
     }
     
     /**
-     * <p>getValue.</p>
-     *
-     * @return a int.
+     * Gets the value of the state.
      */
     public int getValue(){
-        final int value = getLiteral().getValue();
-        return value + getSubstractionCompensation();
-    }
-    
-    private int getSubstractionCompensation(){
         return super.getFirst().getSecondValue();
     }
     
-    private static int calculateSubstractionCompensation(final RomanNumberLiteral literal, final Optional<RomanNumberLiteral> predecessor ){
+    /**
+     * Calculates the value of the state depending of the literal of this state and the predecessor literal.
+     * 
+     * @param literal the literal of this state.
+     * @param predecessor the literal predecessors this state. 
+     * @return the value of the state.
+     */
+    private static int calculateValue(final RomanNumberLiteral literal, final Optional<RomanNumberLiteral> predecessor ){
         
         if(predecessor.isPresent() && literal.isHigherThen(predecessor.get())){
-            return -(predecessor.get().getValue() * 2);
+            return literal.getValue() - (predecessor.get().getValue() * 2);
         }else{
-            return 0;
+            return literal.getValue();
         }
     }
 }

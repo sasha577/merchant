@@ -3,30 +3,23 @@ package org.thoughtworks.assessment.merchant.romannumerals.api.common.types;
 import org.thoughtworks.assessment.merchant.common.types.base.SingleBasedValue;
 
 /**
- * <p>ArabicNumber class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Represents the Arabic numeral.
+ * For example: 22, 103
  */
 @SuppressWarnings("serial")
 public final class ArabicNumber extends SingleBasedValue<Integer>{
 
     /**
-     * <p>valueOf.</p>
-     *
-     * @param i a int.
-     * @return a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.ArabicNumber} object.
+     * Factory method.
      */
     public static ArabicNumber valueOf( final int i){
         return new ArabicNumber(i);
     }
     
     /**
-     * <p>Constructor for ArabicNumber.</p>
-     *
-     * @param value a {@link java.lang.Integer} object.
+     * Constructor.
      */
-    public ArabicNumber(final Integer value) {
+    public ArabicNumber(final int value) {
         super(value);
     }
 

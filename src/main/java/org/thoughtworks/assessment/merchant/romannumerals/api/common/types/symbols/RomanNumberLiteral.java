@@ -67,9 +67,9 @@ public enum RomanNumberLiteral{
      *
      * @param c char to search
      * @return enum item
-     * @throws WrongRomanLiteral if not found
+     * @throws WrongRomanLiteral if no item could be found
      */
-    public static RomanNumberLiteral of(final char c){
+    public static RomanNumberLiteral of(final char c) throws WrongRomanLiteral{
         
         final List<RomanNumberLiteral> allValues = Arrays.asList(RomanNumberLiteral.values());
         

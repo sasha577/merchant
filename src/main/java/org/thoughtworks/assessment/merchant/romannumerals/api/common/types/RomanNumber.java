@@ -6,23 +6,23 @@ import java.util.stream.Collectors;
 
 import org.thoughtworks.assessment.merchant.common.types.base.SingleBasedValue;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanLiteral;
 
 /**
- * <p>RomanNumber class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Represents the Roman numeral.
+ * 
+ * For example: IV, MXXXI
  */
 @SuppressWarnings("serial")
 public final class RomanNumber extends SingleBasedValue<Collection<RomanNumberLiteral>>{
 
     /**
-     * <p>valueOf.</p>
-     *
-     * @param romanNumber a {@link java.lang.String} object.
-     * @return a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber} object.
+     * Creates an class instance from the string.
+     * Each character of the string is considered as a Roman literal: I,V ....
+     * 
+     * @throws WrongRomanLiteral if one of the literals could not be found.
      */
-    public static RomanNumber valueOf(final String romanNumber){
+    public static RomanNumber valueOf(final String romanNumber) throws WrongRomanLiteral{
 
         final List<RomanNumberLiteral> string = 
                 romanNumber.chars().mapToObj(c -> RomanNumberLiteral.of((char)c)).collect(Collectors.toList());
@@ -31,18 +31,14 @@ public final class RomanNumber extends SingleBasedValue<Collection<RomanNumberLi
     }
     
     /**
-     * <p>Constructor for RomanNumber.</p>
-     *
-     * @param value a {@link java.util.Collection} object.
+     * Constructor.
      */
     public RomanNumber(final Collection<RomanNumberLiteral> value) {
         super(value);
     }
 
     /**
-     * <p>toLiteral.</p>
-     *
-     * @return a {@link java.lang.String} object.
+     * Gets the user friendly representation of this Roman number. 
      */
     public String toLiteral(){
         return getValue().stream().map(p -> p.name()).collect(Collectors.joining(""));

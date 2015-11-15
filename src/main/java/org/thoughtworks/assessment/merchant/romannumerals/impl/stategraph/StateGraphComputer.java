@@ -20,91 +20,104 @@ import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.StateFactoryImpl;
-import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.MetaStateFactory;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.StateFactoryRegistry;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.statefactory.StateFactory;
 
 /**
- * <p>StateGraphComputer class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Computes the whole state graph of the Roman numerals.
+ * 
+ * The result graph consist only of 84 states.
  */
 public final class StateGraphComputer {
 
-    private final Map<RomanNumberLiteral,StateFactory> factoryBySymbol;
+    private final Map<RomanNumberLiteral,StateFactory> factoryByliteral;
     private final List<StateFactory> factories;
-    
+
     /**
-     * <p>Constructor for StateGraphComputer.</p>
+     * Constructor.
      */
     public StateGraphComputer() {
-        
+
         this.factories = 
-                createStateFactories(new MetaStateFactoryImpl());
-        
-        this.factoryBySymbol = 
-                CollectionUtils.toMap( factories, StateFactory::getSymbol, Function.identity() );
-        
+                createStateFactories(new StateFactoryRegistryImpl());
+
+        this.factoryByliteral = 
+                CollectionUtils.toMap( factories, StateFactory::forLiteral, Function.identity() );
+
     }
-    
+
     /**
-     * <p>create.</p>
-     *
-     * @return a {@link java.util.List} object.
+     * Creates the state graph of the Roman numerals.
+     * 
+     * @return a list of the initial states of the graph.
      */
     public List<State> create(){
-        
-        return CollectionUtils.map( factories, f -> f.apply(Optional.empty()));
-        
-    }
-    
-    private final class MetaStateFactoryImpl implements MetaStateFactory{
-        
-        @Override
-        public StateFactory getSymbolFactory(final RomanNumberLiteral symbol) {
 
-            return StateGraphComputer.this.factoryBySymbol.get(symbol);
+        return CollectionUtils.map( factories, f -> f.apply(Optional.empty()));
+
+    }
+
+    /**
+     * Provides the access to the map between the literal and the corresponding state factory.
+     */
+    private final class StateFactoryRegistryImpl implements StateFactoryRegistry{
+
+        @Override
+        public StateFactory getStateFactoryForLiteral(final RomanNumberLiteral literal) {
+
+            return StateGraphComputer.this.factoryByliteral.get(literal);
         }
     }
-    
-    private static List<StateFactory> createStateFactories( final MetaStateFactory metaStateFactory){
-        
+
+    /**
+     * Creates a collection of state factories, one factory for each Roman numeral literal.
+     */
+    private static List<StateFactory> createStateFactories( final StateFactoryRegistry stateFactoryRegistry){
+
         //The symbols "I", "X", "C", and "M" can be repeated three times in succession, but no more.
         //  "V", "L", and "D" can never be subtracted.
         return Arrays.asList(
                 // "I" can be subtracted from "V" and "X" only.
-                memoize(new StateFactoryImpl(I, 3,  Arrays.asList(V,X), metaStateFactory)),
-                
-                memoize(new StateFactoryImpl(V, 1,  Collections.emptyList(), metaStateFactory)),
-                
+                memorize(new StateFactoryImpl(I, 3,  Arrays.asList(V,X), stateFactoryRegistry)),
+
+                memorize(new StateFactoryImpl(V, 1,  Collections.emptyList(), stateFactoryRegistry)),
+
                 // "X" can be subtracted from "L" and "C" only.
-                memoize(new StateFactoryImpl(X, 3,  Arrays.asList(L,C), metaStateFactory)),
-                
-                memoize(new StateFactoryImpl(L, 1,  Collections.emptyList(), metaStateFactory)),
-                
+                memorize(new StateFactoryImpl(X, 3,  Arrays.asList(L,C), stateFactoryRegistry)),
+
+                memorize(new StateFactoryImpl(L, 1,  Collections.emptyList(), stateFactoryRegistry)),
+
                 //  "C" can be subtracted from "D" and "M" only.
-                memoize(new StateFactoryImpl(C, 3,  Arrays.asList(D,M), metaStateFactory)),
-                
-                memoize(new StateFactoryImpl(D, 1,  Collections.emptyList(), metaStateFactory)),
-                memoize(new StateFactoryImpl(M, 3,  Collections.emptyList(), metaStateFactory))
+                memorize(new StateFactoryImpl(C, 3,  Arrays.asList(D,M), stateFactoryRegistry)),
+
+                memorize(new StateFactoryImpl(D, 1,  Collections.emptyList(), stateFactoryRegistry)),
+                memorize(new StateFactoryImpl(M, 3,  Collections.emptyList(), stateFactoryRegistry))
                 );
     }
 
-    // Lambda memorization
-    private static StateFactory memoize(final StateFactory f) {
-        
-        final Map<Optional<RomanNumberLiteral>,State> lookup = new ConcurrentHashMap<>();
-        
+    /**
+     * Wrappers the state factory instance with the caching capability.
+     *
+     * Because StateFactory is state less and the result depends exclusively on the input parameter, 
+     * it possible to cache the result. 
+     * 
+     * @param stateFatory the factory to wrap.
+     * @return the factory with caching capability.
+     */
+    private static StateFactory memorize(final StateFactory stateFatory) {
+
+        final Map<Optional<RomanNumberLiteral>,State> cashe = new ConcurrentHashMap<>();
+
         return new StateFactory() {
-            
+
             @Override
             public State apply(final Optional<RomanNumberLiteral> t) {
-                return lookup.computeIfAbsent(t, f);
+                return cashe.computeIfAbsent(t, stateFatory);
             }
-            
+
             @Override
-            public RomanNumberLiteral getSymbol() {
-                return f.getSymbol();
+            public RomanNumberLiteral forLiteral() {
+                return stateFatory.forLiteral();
             }
         };
     }

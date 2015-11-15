@@ -7,17 +7,14 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbo
 import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
 
 /**
- * <p>StateFactory interface.</p>
+ * Creates the graph states.
  *
- * @author arubinov
- * @version $Id: $Id
  */
 public interface StateFactory extends Function<Optional<RomanNumberLiteral>,State>{
 
     /**
-     * <p>getSymbol.</p>
-     *
-     * @return a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
+     * Gets a Roman literal for witch this factory creates states.
      */
-    public RomanNumberLiteral getSymbol();
+    public RomanNumberLiteral forLiteral();
+    
 }

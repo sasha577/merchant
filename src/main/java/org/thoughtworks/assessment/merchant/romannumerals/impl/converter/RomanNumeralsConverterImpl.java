@@ -12,19 +12,16 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRo
 import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
 
 /**
- * <p>RomanNumeralsConverterImpl class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Converters the Roman numeral into the Arabic numeral.
  */
 public final class RomanNumeralsConverterImpl implements RomanNumeralsConverter{
     
     private final List<State> stateGraph;
     
     /**
-     * <p>Constructor for RomanNumeralsConverterImpl.</p>
+     * Constructor.
      *
-     * @param stateGraph a {@link java.util.List} object.
+     * @param stateGraph a list of the initial states of the graph.
      */
     public RomanNumeralsConverterImpl(final List<State> stateGraph) {
         this.stateGraph = stateGraph;
@@ -39,23 +36,31 @@ public final class RomanNumeralsConverterImpl implements RomanNumeralsConverter{
         Collection<State> possibleStates = stateGraph;
         int result = 0;
         
-        for(final RomanNumberLiteral s: number.getValue()){
+        for(final RomanNumberLiteral literal: number.getValue()){
             
-            final Optional<State> nextState = 
-                    possibleStates.stream().filter(state -> state.getLiteral() == s).findFirst();
+            // Search for the next state matching literal.
+            final Optional<State> matchigState = 
+                    possibleStates.stream().filter(state -> state.getLiteral() == literal).findFirst();
             
-            if(!nextState.isPresent()){
+            if(!matchigState.isPresent()){
+                // No matching state was found, so Roman literal is not valid. 
                 throw new WrongRomanNumberException(number);
             }
             
-            result += nextState.get().getValue();
+            // Accumulate the value of the state.
+            // Subtractions are already considered in the state value.  
+            result += matchigState.get().getValue();
             
-            possibleStates = nextState.get().getSuccessors();
+            // Get next possible states.
+            possibleStates = matchigState.get().getSuccessors();
         }
         
         return new ArabicNumber(result);
     }
     
+    /**
+     * Checks whether the numeral contains any literal.  
+     */
     private static void checkNotEmpty(final RomanNumber number) throws WrongRomanNumberException{
         if(number.getValue().isEmpty()){
             throw new WrongRomanNumberException(number);

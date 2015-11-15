@@ -5,19 +5,16 @@ import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.Roman
 import org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException;
 
 /**
- * <p>RomanNumeralsConverter interface.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Converters the Roman numeral into the Arabic numeral.
  */
 public interface RomanNumeralsConverter {
 
     /**
-     * <p>toArabicNumber.</p>
+     * Converters the Roman numeral into the Arabic numeral.
      *
-     * @param number a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.RomanNumber} object.
-     * @return a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.ArabicNumber} object.
-     * @throws org.thoughtworks.assessment.merchant.romannumerals.api.exceptions.WrongRomanNumberException if any.
+     * @param number a Roman numeral to be converted to the Arabic numeral.
+     * @return a Arabic numeral.
+     * @throws WrongRomanNumberException if the given Roman number is not valid.
      */
     public ArabicNumber toArabicNumber( RomanNumber number)  throws WrongRomanNumberException;
 }

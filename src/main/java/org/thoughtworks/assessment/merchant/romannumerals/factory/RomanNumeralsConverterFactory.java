@@ -8,17 +8,12 @@ import org.thoughtworks.assessment.merchant.romannumerals.impl.converter.RomanNu
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.StateGraphComputer;
 
 /**
- * <p>RomanNumeralsConverterFactory class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Creates a Roman numerals converter.
  */
 public final class RomanNumeralsConverterFactory{
 
     /**
-     * <p>create.</p>
-     *
-     * @return a {@link org.thoughtworks.assessment.merchant.romannumerals.api.RomanNumeralsConverter} object.
+     * Creates a Roman numerals converter.
      */
     public static RomanNumeralsConverter create(){
         
@@ -28,6 +23,9 @@ public final class RomanNumeralsConverterFactory{
         
     }
     
+    /**
+     * private constructor.
+     */
     private RomanNumeralsConverterFactory() {
         // none
     }

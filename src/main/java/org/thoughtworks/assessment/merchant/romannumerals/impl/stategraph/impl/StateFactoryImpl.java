@@ -10,46 +10,58 @@ import java.util.function.Function;
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
 import org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.common.state.State;
-import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.MetaStateFactory;
+import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.StateFactoryRegistry;
 import org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.statefactory.StateFactory;
 
 /**
- * <p>StateFactoryImpl class.</p>
- *
- * @author arubinov
- * @version $Id: $Id
+ * Provides StateFactory for particular Roman literal.
  */
 public final class StateFactoryImpl implements StateFactory{
 
+    /**
+     * The literal for witch this factory creates states. 
+     */
     private final RomanNumberLiteral literal;
+    
+    /**
+     * How many times the literal can be repeated in the row  
+     */
     private final int maxReccurence;
+    
+    /**
+     * The list of literals this one is allowed to subtract.
+     * For example 'I' is allowed to subtract from 'V' and 'X'   
+     */
     private final Collection<RomanNumberLiteral> minuends;
 
-    private final MetaStateFactory metaFactory;
+    /**
+     * The reference to factory registry.
+     */
+    private final StateFactoryRegistry factoryRegistry;
 
     /**
-     * <p>Constructor for StateFactoryImpl.</p>
+     * Constructor.
      *
-     * @param symbol a {@link org.thoughtworks.assessment.merchant.romannumerals.api.common.types.symbols.RomanNumberLiteral} object.
-     * @param maxCount a int.
-     * @param minuends a {@link java.util.Collection} object.
-     * @param metaFactory a {@link org.thoughtworks.assessment.merchant.romannumerals.impl.stategraph.impl.interfaces.MetaStateFactory} object.
+     * @param symbol the literal for witch this factory creates states.
+     * @param maxCount how many times the literal can be repeated in the row.
+     * @param minuends the list of literals this one is allowed to subtract.
+     * @param factoryRegistry  the reference to factory registry..
      */
     public StateFactoryImpl(
             final RomanNumberLiteral symbol, 
             final int maxCount, 
             final Collection<RomanNumberLiteral> minuends,
-            final MetaStateFactory metaFactory) {
+            final StateFactoryRegistry factoryRegistry) {
 
         this.literal = symbol;
         this.maxReccurence = maxCount;
         this.minuends = minuends;
-        this.metaFactory = metaFactory;
+        this.factoryRegistry = factoryRegistry;
     }
 
     /** {@inheritDoc} */
     @Override
-    public RomanNumberLiteral getSymbol(){
+    public RomanNumberLiteral forLiteral(){
         return literal;
     }
 
@@ -70,7 +82,7 @@ public final class StateFactoryImpl implements StateFactory{
                         literal.getLowerValues();
         
         final List<State> lowerFollowers = 
-                CollectionUtils.map(lowerliterals, followingLiteral -> metaFactory.getSymbolFactory(followingLiteral).apply(Optional.of(literal)));
+                CollectionUtils.map(lowerliterals, followingLiteral -> factoryRegistry.getStateFactoryForLiteral(followingLiteral).apply(Optional.of(literal)));
         
         followers.addAll(lowerFollowers);
         
@@ -95,13 +107,16 @@ public final class StateFactoryImpl implements StateFactory{
                 CollectionUtils.filter( minuends, minuend -> ( !predecessor.isPresent() || predecessor.get().isHigherOrEqualThen(minuend)) );
 
         final Function<RomanNumberLiteral, State> stateFactory = 
-                followingLiteral -> metaFactory.getSymbolFactory(followingLiteral).apply(Optional.of(literal));
+                followingLiteral -> factoryRegistry.getStateFactoryForLiteral(followingLiteral).apply(Optional.of(literal));
                 
         return CollectionUtils.map(possibleMinuends, stateFactory);
     }
 
     /**
-     *  
+     * creates states of given literals repeated in the row.
+     * 
+     * @param followers states defined as the possible followers for the states to create.
+     * @return states of given literals repeated in the row.
      */
     private Collection<State> createReccurenceStates(final List<State> followers){
         
