@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.thoughtworks.assessment.merchant.common.collections.CollectionUtils;
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.impl.common.state.State;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.impl.stategraph.impl.interfaces.StateFactoryRegistry;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.impl.stategraph.impl.interfaces.statefactory.StateFactory;

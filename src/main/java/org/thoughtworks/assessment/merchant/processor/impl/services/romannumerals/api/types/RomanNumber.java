@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.thoughtworks.assessment.merchant.common.types.base.SingleBasedValue;
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral.WrongRomanLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral.WrongRomanLiteral;
 
 /**
  * Represents the Roman numeral.

@@ -10,14 +10,14 @@ import org.thoughtworks.assessment.merchant.processor.impl.services.productcatal
 
 /**
  * The product catalog.
- * Let registry the products and get information about they prices.
+ * Lets registry the products and get information about they prices.
  */
 public final class ProductCatalogImpl implements ProductCatalog{
 
     private final Map<ProductName,PriceInCredits>  priceByName;
     
     /**
-     * <p>Constructor for ProductCatalogImpl.</p>
+     * Constructor.
      */
     public ProductCatalogImpl() {
 

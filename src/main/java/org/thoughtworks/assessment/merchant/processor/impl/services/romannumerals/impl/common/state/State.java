@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.thoughtworks.assessment.merchant.common.types.Pair;
 import org.thoughtworks.assessment.merchant.common.types.base.PairBasedValue;
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
 
 /**
  * The state node in the state graph of the parser.

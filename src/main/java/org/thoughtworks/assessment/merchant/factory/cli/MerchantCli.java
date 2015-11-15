@@ -17,7 +17,7 @@ import org.thoughtworks.assessment.merchant.processor.common.types.Request;
  * 
  * Gets the input data from the system input and puts the program output into the system output.
  */
-public final class CLIInterface {
+public final class MerchantCli {
 
 	/**
 	 * Entry point for the process.

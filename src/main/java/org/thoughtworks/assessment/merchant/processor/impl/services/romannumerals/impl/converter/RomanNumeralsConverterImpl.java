@@ -8,7 +8,7 @@ import org.thoughtworks.assessment.merchant.processor.impl.services.romannumeral
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.ArabicNumber;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.RomanNumber;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.RomanNumber.WrongRomanNumberException;
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.impl.common.state.State;
 
 /**

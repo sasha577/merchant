@@ -22,7 +22,7 @@ public final class CLIInterfaceTest {
         
         final Writer out = new OutputStreamWriter(actual);
 
-        CLIInterface.process(in, out);
+        MerchantCli.process(in, out);
         
         Assert.assertEquals(IOUtils.toString(TestResources.EXPECTED_OUTPUT.getResource()), actual.toString());
     }

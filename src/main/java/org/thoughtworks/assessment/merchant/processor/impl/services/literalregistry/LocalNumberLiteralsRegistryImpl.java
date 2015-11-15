@@ -10,7 +10,7 @@ import org.thoughtworks.assessment.merchant.processor.impl.services.literalregis
 import org.thoughtworks.assessment.merchant.processor.impl.services.literalregistry.api.common.types.literal.LocalNumberLiteral;
 import org.thoughtworks.assessment.merchant.processor.impl.services.literalregistry.api.exceptions.UnknownLiteral;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.RomanNumber;
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
 
 /**
  * Keeps the mapping between the local numerals and the Roman numerals.

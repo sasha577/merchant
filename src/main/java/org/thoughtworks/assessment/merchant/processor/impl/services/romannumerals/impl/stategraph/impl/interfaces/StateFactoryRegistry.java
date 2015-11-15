@@ -1,6 +1,6 @@
 package org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.impl.stategraph.impl.interfaces;
 
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.impl.stategraph.impl.interfaces.statefactory.StateFactory;
 
 /**

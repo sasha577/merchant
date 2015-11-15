@@ -1,4 +1,4 @@
-package org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols;
+package org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal;
 
 import java.util.Arrays;
 import java.util.Collection;

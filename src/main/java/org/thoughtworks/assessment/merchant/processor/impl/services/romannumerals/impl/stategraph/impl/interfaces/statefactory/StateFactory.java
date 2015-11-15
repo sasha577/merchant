@@ -3,7 +3,7 @@ package org.thoughtworks.assessment.merchant.processor.impl.services.romannumera
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
 import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.impl.common.state.State;
 
 /**

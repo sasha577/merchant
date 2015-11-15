@@ -2,7 +2,7 @@ package org.thoughtworks.assessment.merchant.processor.impl.services.romannumera
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.symbols.RomanNumberLiteral;
+import org.thoughtworks.assessment.merchant.processor.impl.services.romannumerals.api.types.literal.RomanNumberLiteral;
 
 public final class RomanNumberSymbolTest {
 
