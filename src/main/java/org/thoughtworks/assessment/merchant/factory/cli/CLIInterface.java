@@ -8,7 +8,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Optional;
 
-import org.thoughtworks.assessment.merchant.factory.common.MerchantFactory;
 import org.thoughtworks.assessment.merchant.processor.Merchant;
 import org.thoughtworks.assessment.merchant.processor.common.types.Reply;
 import org.thoughtworks.assessment.merchant.processor.common.types.Request;
@@ -47,13 +46,13 @@ public final class CLIInterface {
 
 		final BufferedReader bin = new BufferedReader(in);
 
-		final Merchant merchant = MerchantFactory.create();
+		final Merchant merchant = new Merchant();
 
 		Optional<Request> request;
 
 		while( (request=readNextRequest(bin)).isPresent() ){
 
-			Optional<Reply> reply = merchant.process(request.get());
+			final Optional<Reply> reply = merchant.process(request.get());
 			writeReply(reply, out);
 		}
 	}
