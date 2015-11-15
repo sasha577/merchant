@@ -26,7 +26,7 @@ import org.thoughtworks.assessment.merchant.processor.impl.services.romannumeral
 /**
  * Computes the whole state graph of the Roman numerals.
  * 
- * The result graph consist only of 84 states.
+ * The result graph consist only of 82 states.
  */
 public final class StateGraphComputer {
 
