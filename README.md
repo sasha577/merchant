@@ -1,8 +1,8 @@
 # Merchant's Guide to the Galaxy
 
 Requirements:
-1. Java 8.x
-2. Maven 3.x
+1. Java 8.x;
+2. Maven 3.x;
 
 Build (from CLI):
 

@@ -13,6 +13,7 @@ import org.thoughtworks.assessment.merchant.processor.impl.services.romannumeral
 
 /**
  * Converters the Roman numeral into the Arabic numeral.
+ * Checks the Roman numeral is valid.
  */
 public final class RomanNumeralsConverterImpl implements RomanNumeralsConverter{
     
